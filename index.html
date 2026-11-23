@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>IQC Sysmex UC-1000</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Prompt:wght@500;600;700&display=swap">
 <style>
 :root{
   color-scheme:light;
@@ -16,7 +16,7 @@
   --warn:#B97A12; --warnbg:#FDF3E1; --warnline:#E5A23C;
   --bad:#D65B65; --badbg:#FBEAEB; --badline:#EDA9AF;
   --shadow:0 14px 30px -20px rgba(21,86,107,.5);
-  --font:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;--fh:'Prompt','IBM Plex Sans Thai',system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0F1D24; --card:#172831; --soft:#112229; --ink:#E6EFF2; --mute:#93A9B4; --line:#27404B;
@@ -37,6 +37,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.hero h1,h2,.btn,.chip,.sc,.tag,.gbox h2,.sec>summary b,.crow>summary b,.sh-top h2,.step-title,.ptitle{font-family:var(--fh)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;overflow-x:hidden}
 button,input,textarea{font:inherit;color:inherit}
 .ic{width:1.15em;height:1.15em;flex:none}
@@ -48,7 +49,7 @@ button,input,textarea{font:inherit;color:inherit}
 .hero:before{width:240px;height:240px;right:-70px;top:-90px}
 .hero:after{width:150px;height:150px;left:-50px;bottom:-60px}
 .hero .wrap{position:relative;z-index:1;padding-block:20px 66px}
-.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hrow{display:flex;align-items:center;justify-content:flex-end;gap:10px}
 .mark{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center;flex:none}
 .mark .ic{width:24px;height:24px}
 .greet{font-size:13px;background:rgba(255,255,255,.18);border-radius:99px;padding:5px 12px;font-weight:500}
@@ -90,7 +91,7 @@ main{padding-block:18px 150px}
 .tile input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;background:none}
 .tile:focus-within,.fcard:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
 .fcard{display:flex;flex-direction:column;gap:2px;margin-top:10px;background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:11px 14px}
-.bare{width:100%;border:0;background:none;padding:2px 0;font-size:19px;font-weight:600;outline:none;min-width:0}
+.bare{font-family:inherit;color:var(--fg);width:100%;border:0;background:none;padding:2px 0;font-size:19px;font-weight:600;outline:none;min-width:0}
 .bare::placeholder{color:var(--mute);opacity:.55;font-weight:400}
 .hint{margin:6px 2px 0;font-size:12.5px;color:var(--mute)}
 .lotcard{display:flex;align-items:center;gap:12px;margin-top:10px;border-radius:16px;padding:12px 12px 12px 14px;background:linear-gradient(135deg,var(--Lt),var(--soft));border:1.5px solid var(--line)}
@@ -99,6 +100,81 @@ main{padding-block:18px 150px}
 .lotcard small{display:block;font-size:12px;color:var(--mute);font-weight:600}
 .lotcard b{display:block;font-size:20px;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mini{font-size:13px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--pri);border-radius:11px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.gear{width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center;cursor:pointer}
+.gear .ic{width:22px;height:22px}
+.gear:focus-visible{outline:2px solid #fff;outline-offset:2px}
+select.bare{appearance:none;-webkit-appearance:none;background:none;cursor:pointer;padding-right:24px;background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 12px) 55%,calc(100% - 7px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.gate{position:fixed;inset:0;z-index:60;background:rgba(10,30,38,.62);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:20px}
+.gbox{background:var(--card);border-radius:26px;padding:26px 22px 20px;max-width:360px;width:100%;text-align:center;animation:pop .3s cubic-bezier(.2,1.2,.4,1)}
+.gbox h2{margin:8px 0 0;font-size:22px}
+.gi{width:56px;height:56px;border-radius:18px;margin:0 auto;display:grid;place-items:center;background:var(--Lt);color:var(--pri)}
+.gi .ic{width:28px;height:28px}
+.gin{width:100%;height:54px;margin-top:14px;border:1.5px solid var(--line);border-radius:14px;background:var(--soft);padding:0 14px;font-size:20px;text-align:center;letter-spacing:.2em}
+.gin:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
+.gmsg{color:var(--bad);font-size:13px;min-height:1.3em;margin-top:6px}
+.gbtns{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:6px}
+.gbox .demo{margin:12px 0 0;font-size:12.5px;color:var(--warn);background:var(--warnbg);border-radius:10px;padding:8px 10px}
+.sheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sh-top{position:sticky;top:0;z-index:2;background:var(--card);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.sh-top .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
+.sh-top h2{margin:0;font-size:19px;flex:1}
+.iconbtn{width:42px;height:42px;border-radius:13px;border:1.5px solid var(--line);background:var(--soft);display:grid;place-items:center;cursor:pointer;color:var(--fg);flex:none}
+.sh-body{padding-block:14px 130px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-top:12px;box-shadow:var(--shadow);overflow:hidden}
+.sec>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:8px}
+.sec>summary::-webkit-details-marker{display:none}
+.sec>summary:after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);transition:transform .2s;flex:none}
+.sec[open]>summary:after{transform:rotate(-135deg)}
+.sec>summary b{display:block;font-size:16px}
+.sec>summary small{display:block;color:var(--mute);font-size:12.5px;font-weight:400}
+.secb{padding:2px 16px 16px}
+.crow{border-top:1px solid var(--line)}
+.crow>summary{list-style:none;cursor:pointer;padding:11px 2px;display:grid;grid-template-columns:auto 1fr;gap:0 10px;align-items:baseline}
+.crow>summary::-webkit-details-marker{display:none}
+.crow>summary b{font-size:16px}
+.crow>summary span{color:var(--mute);font-size:13px}
+.crow>summary small{grid-column:1/-1;color:var(--mute);font-size:12.5px}
+.crow .secb{padding:0 2px 12px}
+.lvblock{margin-top:10px}
+.lvblock .tag{margin-bottom:8px}
+.chipsr{display:flex;flex-wrap:wrap;gap:8px}
+.sc{min-width:52px;min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--soft);font-size:16px;font-weight:600;cursor:pointer;color:var(--fg)}
+.sc.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rg label,.lab{display:block;font-size:12.5px;font-weight:600;color:var(--mute)}
+.sin{width:100%;height:48px;margin-top:4px;border:1.5px solid var(--line);border-radius:12px;background:var(--soft);padding:0 12px;font-size:17px;color:var(--fg)}
+.sin:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
+.lrow{display:flex;gap:8px;margin-top:8px}
+.lrow .sin{margin-top:0;flex:1;min-width:0}
+.lrow .iconbtn{height:48px;width:48px;color:var(--bad)}
+.addbtn{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:46px;border-radius:13px;border:1.5px dashed var(--line);background:none;color:var(--pri);font-weight:700;cursor:pointer;font-size:15px}
+.tgl{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0 4px;font-size:14.5px}
+.tgl input{width:46px;height:26px;appearance:none;-webkit-appearance:none;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:background .2s;flex:none}
+.tgl input:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.tgl input:checked{background:var(--ok)}
+.tgl input:checked:after{transform:translateX(20px)}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper .sin{text-align:center;width:90px;margin-top:0;font-weight:700}
+.stepper .iconbtn{width:48px;height:48px;font-size:22px;font-weight:700}
+.sh-dock{position:fixed;left:0;right:0;bottom:0;z-index:3;padding:26px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}
+.sh-dock .in{max-width:528px;margin:0 auto}
+.sh-dock .btn{width:100%}
+.infonote{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--mute);margin-top:12px;padding:0 4px}
+.plabel{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--mute);margin:0 0 8px}
+.branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.br{min-height:50px;border:1.5px solid var(--line);background:var(--soft);border-radius:15px;font-size:16px;font-weight:700;cursor:pointer;color:var(--fg);padding:0 4px;transition:transform .1s,background .15s}
+.br:active{transform:scale(.96)}
+.br.on{background:linear-gradient(135deg,#15566B,#167D8D 55%,#38A6AD) border-box;border-color:transparent;color:#fff;box-shadow:0 10px 18px -12px var(--pri)}
+.lotcard .exp{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
+.lotcard .exp em{font-style:normal;font-weight:700}
+.lotcard.warn{background:linear-gradient(135deg,var(--warnbg),var(--soft));border-color:var(--warnline)}
+.lotcard.warn .exp em{color:var(--warn)}
+.lotcard.bad{background:linear-gradient(135deg,var(--badbg),var(--soft));border-color:var(--badline)}
+.lotcard.bad .exp em{color:var(--bad)}
+.lotcard{margin-top:0;margin-bottom:8px}
+.editbox{border:1.5px dashed var(--line);border-radius:16px;padding:10px;margin-bottom:8px}
+.editbox .et{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--pri);margin:0 2px 8px}
+.editbox .fcard{margin-top:0}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
 .stp{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 10px 12px;min-width:0}
 .stp i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-style:normal;font-weight:700;font-size:13px;margin-bottom:6px}
@@ -178,7 +254,6 @@ textarea.field{height:auto;padding:12px 14px;resize:vertical;min-height:90px;lin
 .pill .ic{width:1em;height:1em}
 .note{display:flex;gap:10px;align-items:flex-start;border-radius:14px;padding:12px 14px;margin-top:12px;font-size:14px;background:var(--okbg);color:var(--ok)}
 .note .ic{margin-top:2px}
-.note.warn{background:var(--warnbg);color:var(--warn)}
 label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--mute);margin:0 0 8px}
 .foot{margin:26px 0 0;text-align:center;font-size:12.5px;color:var(--mute)}
 
@@ -214,14 +289,14 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 @media (max-width:350px){.tr,.th{grid-template-columns:minmax(0,1fr) 74px 74px}.res{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
 </style>
 
-</head>
-<body>
 <header id="top"></header>
-<main class="wrap"><div id="view"></div><p class="foot">พัฒนาโดย ทนพ.วรินทร แสงหิรัญรัตนา</p></main>
+<main class="wrap"><div id="view"></div><p class="foot">พัฒนาและดูแลระบบโดย ทนพ.วรินทร แสงหิรัญรัตนา</p></main>
 <nav class="dock"><div class="in" id="dockin">
   <button type="button" class="btn back" id="back" aria-label="ย้อนกลับ"></button>
   <button type="button" class="btn pri" id="next"></button>
 </div></nav>
+<div class="sheet" id="settings" hidden></div>
+<div class="gate" id="gate" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="done" id="done" hidden></div>
 
@@ -242,12 +317,12 @@ let P=[
  {k:'SG',ab:'S.G',name:'Specific gravity',num:true,dec:3,ph:'เช่น 1.015',L:[1.000,1.025],H:[1.010,1.030]}
 ];
 let N=P.length, TOTAL=N*2;
-let critWarn=[];            // ข้อความเตือนเรื่องตารางเกณฑ์
-let ready=false;            // true เมื่อโหลดเกณฑ์เสร็จ
+let critWarn=[];
 
 /* ใส่ URL เว็บแอป Apps Script (ลงท้าย /exec) เมื่อนำไปใช้จริง
    ปล่อยว่างไว้ = โหมดตัวอย่าง ไม่บันทึกลงชีต */
-const API_URL='https://script.google.com/macros/s/AKfycbwIslcbqe6vLaCr9PSJ2Esmogj2sWZ6ckC8YaSGQXbL0NfOHrAOuw2pNAV2QjcM75Sm/exec';   // ลิงก์ Apps Script (เว็บแอป ลงท้าย /exec)
+const API_URL="https://script.google.com/macros/s/AKfycbwIslcbqe6vLaCr9PSJ2Esmogj2sWZ6ckC8YaSGQXbL0NfOHrAOuw2pNAV2QjcM75Sm/exec";
+let ready=!API_URL;   // โหมดตัวอย่างพร้อมใช้ทันที
 
 /* ---------- สถานะ ----------
    step 0 = ข้อมูลทั่วไป, 1 = Control-L, 2 = Control-H, 3 = สรุปและบันทึก */
@@ -262,13 +337,55 @@ try{state.info.name=localStorage.getItem('qcName')||'';}catch(e){}
 
 
 /* ---------- ตัวอย่าง: Lot ปัจจุบันที่ระบบจำไว้ (ของจริงดึงจากชีต) ---------- */
-state.lotLocked=false;
+/* ---------- สาขา + น้ำยา Control + สตริป UC-10S ---------- */
+const CFG={
+  branches:['เกาะหวาย','ตะพง','เนินพระ'],
+  names:['สมชาย','สุดา','วรินทร','มานี'],
+  nameMode:true,          // true = เลือกชื่อจากรายชื่อ
+  expDays:30,             // เตือนเมื่อน้ำยาเหลือไม่เกินกี่วัน
+  report:{org:'โรงพยาบาลระยอง · ห้องปฏิบัติการ',signers:[{role:'ผู้จัดทำรายงาน',name:''},{role:'ผู้ตรวจสอบ',name:''},{role:'หัวหน้าห้องปฏิบัติการ',name:''}]}
+};
+/* ข้อมูลตัวอย่างในโหมดร่าง (ของจริงดึงจากชีตตามสาขา) */
+const DEMO_SETUP={
+  'เกาะหวาย':{lot:'UCC02605',exp:'2027-01-22',slot:'AC5010',sexp:'2027-12-07'},
+  'ตะพง':{lot:'UCC02601',exp:'2026-12-10',slot:'AC5008',sexp:'2027-06-30'},
+  'เนินพระ':{}
+};
+state.branch='';
+state.setup={lot:'',exp:'',slot:'',sexp:''};
+state.editRe=true;state.editStrip=true;state.loadingSetup=false;
+try{state.branch=localStorage.getItem('qcBranch')||'';}catch(e){}
+if(!CFG.branches.includes(state.branch))state.branch='';
+const apiGet=a=>fetch(API_URL+(API_URL.indexOf('?')>=0?'&':'?')+'action='+a).then(r=>r.json());
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());};
+function expInfo(exp){
+  if(!exp)return null;
+  const n=Math.round((new Date(exp)-new Date(todayISO()))/864e5);
+  if(isNaN(n))return null;
+  return n<0?{c:'bad',t:'หมดอายุแล้ว'}:n<=CFG.expDays?{c:'warn',t:'เหลือ '+n+' วัน'}:{c:'',t:'เหลือ '+n+' วัน'};
+}
+function applySetup(s){
+  s=s||{};
+  state.setup={lot:s.lot||'',exp:s.exp||'',slot:s.slot||'',sexp:s.sexp||''};
+  state.editRe=!(state.setup.lot&&state.setup.exp);
+  state.editStrip=!(state.setup.slot&&state.setup.sexp);
+}
+async function selectBranch(b){
+  state.branch=b;
+  try{localStorage.setItem('qcBranch',b);}catch(e){}
+  state.loadingSetup=true;if(state.step===0)render();
+  try{
+    if(!API_URL)applySetup(DEMO_SETUP[b]);
+    else{const j=await apiGet('setup&branch='+encodeURIComponent(b));applySetup(j&&j.ok?j.data:{});}
+  }catch(err){applySetup({});toast('โหลดข้อมูลน้ำยาไม่สำเร็จ กรอกเองได้');}
+  state.loadingSetup=false;
+  if(state.step===0)render();
+}
 
 /* ---------- วันที่/เวลาแบบไทย ---------- */
 const MON=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const thDate=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?(+m[3])+' '+MON[+m[2]-1]+' '+(+m[1]+543):'เลือกวันที่';};
 const thTime=s=>s?s+' น.':'เลือกเวลา';
-const greet=()=>{const h=new Date().getHours();return h<12?'สวัสดีตอนเช้า':h<16?'สวัสดีตอนบ่าย':h<19?'สวัสดีตอนเย็น':'สวัสดีตอนค่ำ';};
 
 /* ---------- ไอคอน ---------- */
 const IC={
@@ -286,7 +403,12 @@ const IC={
  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
  lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
- doc:'<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 13h6M10 17h6"/>'
+ doc:'<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 13h6M10 17h6"/>',
+ cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+ pin:'<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+ strip:'<rect x="8" y="3" width="8" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/>'
 };
 const ic=n=>'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>';
 
@@ -313,14 +435,14 @@ function paintTop(){
   const s=stat(),l=lvOf(),t=$('top');
   if(state.step===0){
     t.className='hero';
-    t.innerHTML='<div class="wrap"><div class="hrow"><div class="mark">'+ic('flask')+'</div><span class="greet">'+greet()+'</span></div>'+
-      '<p class="eyebrow">โรงพยาบาลระยอง</p><h1>IQC เครื่องตรวจวิเคราะห์ตะกอนปัสสาวะ</h1><p class="hsub">ยี่ห้อ Sysmex รุ่น UC-1000</p></div>';
+    t.innerHTML='<div class="wrap"><div class="hrow"><button type="button" class="gear" id="open-settings" aria-label="ตั้งค่า">'+ic('cog')+'</button></div>'+
+      '<p class="eyebrow">โรงพยาบาลระยอง'+(state.branch?' · สาขา'+state.branch:'')+'</p><h1>IQC เครื่องตรวจวิเคราะห์ตะกอนปัสสาวะ</h1><p class="hsub">ยี่ห้อ Sysmex รุ่น UC-1000</p></div>';
     return;
   }
   t.className='bar';
   const cp=(k)=>'<span class="cp '+(s.cnt[k]===N?'full':lvOf()===k?'on':'')+'">'+k+' '+s.cnt[k]+'/'+N+'</span>';
-  t.innerHTML='<div class="wrap"><div class="brow"><div class="mark">'+ic('flask')+'</div>'+
-    '<div class="bt"><b>'+(l?'Control-'+l:'สรุปและบันทึก')+'</b><span>IQC · Sysmex UC-1000</span></div>'+
+  t.innerHTML='<div class="wrap"><div class="brow">'+
+    '<div class="bt"><b>'+(l?'Control-'+l:'สรุปและบันทึก')+'</b><span>IQC · '+(state.branch?'สาขา'+state.branch:'Sysmex UC-1000')+'</span></div>'+
     '<div class="cnts">'+cp('L')+cp('H')+'</div></div>'+
     (l?'<div class="rail" id="rail">'+P.map((p,i)=>{const j=judge(p,l);
       return '<button type="button" class="seg '+(j===null?'':j?'ok':'bad')+'" data-scroll="'+i+'" aria-label="'+p.ab+'"><i></i></button>';}).join('')+'</div>':'<div style="height:8px"></div>')+'</div>';
@@ -339,23 +461,50 @@ function paintDock(){
 }
 
 /* ---------- หน้า 0: ข้อมูลทั่วไป ---------- */
+function setupCard(kind){
+  const re=kind==='re',s=state.setup,edit=re?state.editRe:state.editStrip;
+  const lot=re?s.lot:s.slot,exp=re?s.exp:s.sexp;
+  const title=re?'น้ำยา Control (L และ H)':'สตริป UC-10S';
+  const ids=re?['f-lot','f-exp']:['f-slot','f-sexp'];
+  if(!edit){
+    const e=expInfo(exp);
+    return '<div class="lotcard '+(e?e.c:'')+'"><div class="li">'+ic(re?'drop':'strip')+'</div><div class="lt"><small>'+title+'</small><b>'+esc(lot)+'</b>'+
+      '<span class="exp">Exp '+thDate(exp)+(e?' · <em>'+e.t+'</em>':'')+'</span></div><button type="button" class="mini" data-act="'+(re?'edit-re':'edit-strip')+'">เปลี่ยน</button></div>';
+  }
+  return '<div class="editbox"><div class="et">'+ic(re?'drop':'strip')+title+'</div><div class="g2">'+
+    '<label class="fcard"><small>Lot</small><input class="bare" id="'+ids[0]+'" placeholder="เช่น 123456" value="'+esc(lot)+'"></label>'+
+    '<label class="tile"><small>'+ic('cal')+'Exp</small><b id="v-'+ids[1]+'">'+(exp?thDate(exp):'เลือกวันที่')+'</b><input id="'+ids[1]+'" type="date" value="'+exp+'" aria-label="วันหมดอายุ"></label></div></div>';
+}
+function nameField(){
+  const names=CFG.nameMode?CFG.names:[],cur=state.info.name;
+  const txt=lbl=>'<label class="fcard"><small>'+ic('user')+lbl+'</small><input class="bare" id="f-name" placeholder="ชื่อ-สกุล" autocomplete="name" value="'+esc(cur)+'"></label>';
+  if(!names.length)return txt('ผู้บันทึก');
+  const other=state.nameOther||(cur&&!names.includes(cur));
+  return '<label class="fcard"><small>'+ic('user')+'ผู้บันทึก</small><select class="bare" id="f-name-sel"'+(cur||other?'':' style="color:var(--mute);font-weight:400"')+'><option value="">เลือกชื่อ</option>'+
+    names.map(n=>'<option value="'+esc(n)+'"'+(!other&&cur===n?' selected':'')+'>'+esc(n)+'</option>').join('')+
+    '<option value="__other"'+(other?' selected':'')+'>อื่นๆ (พิมพ์เอง)</option></select></label>'+(other?txt('ชื่อ-สกุล'):'');
+}
 function viewInfo(){
-  const i=state.info;
-  const lot=state.lotLocked
-    ?'<div class="lotcard"><div class="li">'+ic('lock')+'</div><div class="lt"><small>Lot น้ำยา QC</small><b>'+esc(i.lot)+'</b></div><button type="button" class="mini" id="lot-change">เปลี่ยน Lot</button></div><p class="hint">ระบบจำ Lot นี้ไว้ให้ทุกเครื่อง จนกว่าจะกดเปลี่ยน</p>'
-    :'<label class="fcard"><small>'+ic('drop')+'Lot น้ำยา QC</small><input class="bare" id="f-lot" placeholder="เช่น 123456" value="'+esc(i.lot)+'"></label><p class="hint">บันทึกแล้วระบบจะจำ Lot นี้ให้ทุกเครื่อง</p>';
-  return '<section class="page pull"><div class="panel">'+
-    '<div class="g2">'+
+  const i=state.info,hasB=!!state.branch;
+  const picker='<div class="plabel">'+ic('pin')+'สาขาที่บันทึก</div><div class="branches" role="group" aria-label="สาขา">'+
+    CFG.branches.map(b=>'<button type="button" class="br'+(state.branch===b?' on':'')+'" data-act="branch" data-b="'+b+'">'+b+'</button>').join('')+'</div>';
+  let reagents;
+  if(!hasB)reagents='<p class="hint" style="margin:12px 2px 0">เลือกสาขาก่อน ระบบจะดึง Lot/Exp ของสาขานั้นมาให้อัตโนมัติ</p>';
+  else if(state.loadingSetup)reagents='<p class="hint" style="margin:12px 2px 0">กำลังโหลดข้อมูลน้ำยาของสาขา'+esc(state.branch)+'...</p>';
+  else reagents='<div class="plabel" style="margin-top:14px">'+ic('flask')+'น้ำยาและสตริปของสาขา'+esc(state.branch)+'</div>'+setupCard('re')+setupCard('strip')+
+    '<p class="hint">ใช้ร่วมกันทุกเครื่องในสาขานี้ จนกว่าจะกดเปลี่ยน</p>';
+  return '<section class="page pull"><div class="panel">'+picker+
+    '<div class="g2" style="margin-top:14px">'+
     '<label class="tile"><small>'+ic('cal')+'วันที่</small><b id="v-date">'+thDate(i.date)+'</b><input id="f-date" type="date" value="'+i.date+'" aria-label="วันที่"></label>'+
     '<label class="tile"><small>'+ic('clock')+'เวลา</small><b id="v-time">'+thTime(i.time)+'</b><input id="f-time" type="time" value="'+i.time+'" aria-label="เวลา"></label>'+
     '</div>'+
-    '<label class="fcard"><small>'+ic('user')+'ผู้บันทึก</small><input class="bare" id="f-name" placeholder="ชื่อ-สกุล" autocomplete="name" value="'+esc(i.name)+'"></label>'+
-    lot+'</div>'+
+    nameField()+
+    reagents+'</div>'+
     '<div class="steps">'+
       '<div class="stp"><i>1</i><b>Control-L</b><span>กรอก '+N+' รายการ</span></div>'+
       '<div class="stp"><i>2</i><b>Control-H</b><span>กรอก '+N+' รายการ</span></div>'+
       '<div class="stp"><i>3</i><b>สรุปผล</b><span>ตรวจแล้วบันทึก</span></div>'+
-    '</div>'+(critWarn.length?'<div class="note warn">'+ic('alert')+'<span style="white-space:pre-line">'+esc(critWarn.join('\n'))+'</span></div>':'')+(!ready?'<div class="note">'+ic('info')+'<span>กำลังโหลดเกณฑ์ผ่านจากชีต...</span></div>':'')+'</section>';
+    '</div>'+(critWarn.length?'<div class="note warn">'+ic('alert')+'<span style="white-space:pre-line">'+esc(critWarn.join('\n'))+'</span></div>':'')+(!ready?'<div class="note" style="background:var(--soft);color:var(--mute)">'+ic('info')+'<span>กำลังโหลดเกณฑ์ผ่านจากชีต...</span></div>':'')+'</section>';
 }
 
 /* ---------- หน้า 1-2: รายการของ Control-L / Control-H ---------- */
@@ -431,7 +580,7 @@ function viewSummary(){
   };
   const rows=P.map((p,k)=>'<div class="tr"><span><b>'+p.ab+'</b><em>'+p.name+'</em></span>'+cell(p,k,'L')+cell(p,k,'H')+'</div>').join('');
   return '<section class="page"><div class="verdict '+vc+'"><div class="vi">'+ic(miss?'alert':nf?'x':'check')+'</div><div><h2>'+vt+'</h2><p>'+vs+'</p></div></div>'+
-    '<div class="meta"><span>'+ic('cal')+thDate(i.date)+'</span><span>'+ic('clock')+thTime(i.time)+'</span><span>'+ic('user')+(esc(i.name)||'ยังไม่ระบุ')+'</span><span>'+ic('drop')+'Lot '+(esc(i.lot)||'–')+'</span></div>'+
+    '<div class="meta"><span>'+ic('pin')+'สาขา'+esc(state.branch)+'</span><span>'+ic('cal')+thDate(i.date)+'</span><span>'+ic('clock')+thTime(i.time)+'</span><span>'+ic('user')+(esc(i.name)||'ยังไม่ระบุ')+'</span><span>'+ic('drop')+'Lot '+esc(state.setup.lot)+' · Exp '+thDate(state.setup.exp)+'</span><span>'+ic('strip')+'UC-10S '+esc(state.setup.slot)+' · Exp '+thDate(state.setup.sexp)+'</span></div>'+
     '<div class="res">'+rc('L')+rc('H')+'</div>'+
     '<div class="card tbl"><div class="th"><span>รายการ</span><span>L</span><span>H</span></div>'+rows+'</div>'+
     '<div class="card"><label class="fl" for="f-remark">'+ic('doc')+'หมายเหตุ / การแก้ไข</label><textarea class="field" id="f-remark" placeholder="เช่น วัดซ้ำแล้วผ่าน / เปลี่ยนน้ำยา">'+esc(state.remark)+'</textarea></div></section>';
@@ -465,7 +614,13 @@ function toast(m){
 
 /* ---------- เหตุการณ์ ---------- */
 $('view').addEventListener('click',e=>{
-  if(e.target.closest('#lot-change')){state.lotLocked=false;render();setTimeout(()=>{const f=$('f-lot');if(f){f.focus();f.select();}},50);return;}
+  const act=e.target.closest('[data-act]');
+  if(act){
+    const k=act.dataset.act;
+    if(k==='branch'){if(state.branch!==act.dataset.b)selectBranch(act.dataset.b);return;}
+    if(k==='edit-re'){state.editRe=true;render();setTimeout(()=>{const f=$('f-lot');if(f){f.focus();f.select();}},50);return;}
+    if(k==='edit-strip'){state.editStrip=true;render();setTimeout(()=>{const f=$('f-slot');if(f){f.focus();f.select();}},50);return;}
+  }
   const j=e.target.closest('[data-jump]');
   if(j){const[l,i]=j.dataset.jump.split(':');goItem(l,+i,false);return;}
   const c=e.target.closest('.chip'),l=lvOf();
@@ -478,12 +633,22 @@ $('view').addEventListener('click',e=>{
     if(!was)setTimeout(()=>{if(lvOf()===l)scrollNext(i,l);},380);
   }
 });
+$('view').addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='f-name-sel'){
+    if(t.value==='__other'){state.nameOther=true;state.info.name='';render();setTimeout(()=>{const f=$('f-name');if(f)f.focus();},50);}
+    else{state.nameOther=false;state.info.name=t.value;t.style.color=t.value?'':'var(--mute)';t.style.fontWeight=t.value?'':'400';}
+  }
+});
 $('view').addEventListener('input',e=>{
   const t=e.target;
   if(t.id==='f-date'){state.info.date=t.value;$('v-date').textContent=thDate(t.value);}
   else if(t.id==='f-time'){state.info.time=t.value;$('v-time').textContent=thTime(t.value);}
   else if(t.id==='f-name')state.info.name=t.value;
-  else if(t.id==='f-lot')state.info.lot=t.value;
+  else if(t.id==='f-lot')state.setup.lot=t.value;
+  else if(t.id==='f-slot')state.setup.slot=t.value;
+  else if(t.id==='f-exp'){state.setup.exp=t.value;$('v-f-exp').textContent=t.value?thDate(t.value):'เลือกวันที่';}
+  else if(t.id==='f-sexp'){state.setup.sexp=t.value;$('v-f-sexp').textContent=t.value?thDate(t.value):'เลือกวันที่';}
   else if(t.id==='f-remark')state.remark=t.value;
   else if(t.id.slice(0,2)==='n-'&&lvOf()){
     const i=+t.id.slice(2),l=lvOf();
@@ -502,8 +667,7 @@ $('back').onclick=()=>go(state.step-1);
 $('next').onclick=()=>{
   const l=lvOf();
   if(state.step===0){
-    if(!state.info.name.trim()){toast('กรอกชื่อผู้บันทึกก่อน');const f=$('f-name');if(f)f.focus();return;}
-    if(!state.info.lot.trim()){toast('กรอก Lot ก่อน');const f=$('f-lot');if(f)f.focus();return;}
+    const ck=checkInfo();if(ck){toast(ck.m);if(ck.edit){state[ck.edit]=true;render();}return;}
     go(1);
   }else if(l){
     const s=stat();
@@ -517,14 +681,24 @@ $('next').onclick=()=>{
   }else save();
 };
 
+/* ---------- ตรวจข้อมูลหน้าแรก ---------- */
+function checkInfo(){
+  const s=state.setup;
+  if(!state.branch)return{m:'เลือกสาขาก่อน'};
+  if(state.loadingSetup)return{m:'รอสักครู่ กำลังโหลดข้อมูลน้ำยา'};
+  if(!state.info.name.trim())return{m:'กรอกชื่อผู้บันทึกก่อน'};
+  if(!s.lot.trim()||!s.exp)return{m:'กรอก Lot และ Exp ของน้ำยา Control ก่อน',edit:'editRe'};
+  if(!s.slot.trim()||!s.sexp)return{m:'กรอก Lot และ Exp ของสตริป UC-10S ก่อน',edit:'editStrip'};
+  return null;
+}
 /* ---------- บันทึก ---------- */
 async function save(){
   if(state.saving)return;
   const i=state.info,s=stat();
-  if(!i.name.trim()){toast('กรอกชื่อผู้บันทึกก่อน');go(0);return;}
-  if(!i.lot.trim()){toast('กรอก Lot ก่อน');go(0);return;}
+  const ck=checkInfo();if(ck){toast(ck.m);go(0);return;}
   if(s.filled<TOTAL){const m=firstMissing();toast('ยังกรอกไม่ครบ '+(TOTAL-s.filled)+' ช่อง');goItem(m.l,m.i,true);return;}
-  const data={date:i.date,time:i.time,name:i.name.trim(),lot:i.lot.trim(),remark:state.remark.trim(),
+  const su=state.setup;
+  const data={branch:state.branch,date:i.date,time:i.time,name:i.name.trim(),lot:su.lot.trim(),exp:su.exp,slot:su.slot.trim(),sexp:su.sexp,remark:state.remark.trim(),
     L:{values:state.vals.L,fails:s.fails.L,pass:s.fails.L.length===0},
     H:{values:state.vals.H,fails:s.fails.H,pass:s.fails.H.length===0}};
   try{localStorage.setItem('qcName',data.name);}catch(e){}
@@ -547,19 +721,139 @@ function showDone(d,res){
   const line=(l,x)=>'<div class="dline '+(x.pass?'ok':'bad')+'"><span>Control-'+l+'</span><span>'+(x.pass?'ผ่าน':'ไม่ผ่าน: '+esc(x.fails.join(', ')))+'</span></div>';
   $('done').innerHTML='<div class="dbox" role="dialog" aria-modal="true"><div class="dbadge '+(all?'ok':'bad')+'">'+ic(all?'check':'x').replace('width','width')+'</div>'+
     '<h2>'+(all?'QC ผ่านทั้งหมด':'QC ไม่ผ่าน')+'</h2>'+line('L',d.L)+line('H',d.H)+
-    '<p class="sub" style="margin-top:12px">บันทึกลงชีต '+esc(res.tab)+' แล้ว (2 แถว)</p>'+
+    '<p class="sub" style="margin-top:12px">สาขา'+esc(d.branch)+' · บันทึกลงชีต '+esc(res.tab)+' แล้ว (2 แถว)</p>'+
     (res.demo?'<p class="demo">โหมดตัวอย่าง: หน้านี้ยังไม่ได้ต่อกับ Google Sheet จึงไม่ได้บันทึกข้อมูลจริง</p>':'')+
     '<button type="button" class="btn pri" id="again">บันทึกรายการใหม่</button></div>';
   $('done').hidden=false;
   $('again').onclick=()=>{
-    const keep={name:state.info.name,lot:state.info.lot};
-    state.vals={L:{},H:{}};state.remark='';nowFill();state.info.name=keep.name;state.info.lot=keep.lot;state.lotLocked=!!keep.lot;
+    const keep=state.info.name;
+    state.vals={L:{},H:{}};state.remark='';nowFill();state.info.name=keep;
+    state.editRe=!(state.setup.lot&&state.setup.exp);state.editStrip=!(state.setup.slot&&state.setup.sexp);
     $('done').hidden=true;go(0);
   };
 }
 
-/* ---------- โหลดเกณฑ์ผ่าน + Lot ปัจจุบันจากชีต ---------- */
-const apiGet=a=>fetch(API_URL+(API_URL.indexOf('?')>=0?'&':'?')+'action='+a).then(r=>r.json());
+
+/* ---------- ตั้งค่า (ต้องใส่รหัสผ่าน) ---------- */
+let DEMO_CODE='1234',ADMIN_CODE='',WC=null,openSec={crit:true};
+const clone=o=>JSON.parse(JSON.stringify(o));
+const post=body=>fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(r=>r.json());
+document.addEventListener('click',e=>{if(e.target.closest('#open-settings'))openGate();});
+
+function openGate(){
+  $('gate').innerHTML='<div class="gbox" role="dialog" aria-modal="true"><div class="gi">'+ic('lock')+'</div><h2>ตั้งค่าระบบ</h2><p class="sub">ใส่รหัสผ่านเพื่อเข้าสู่การตั้งค่า</p>'+
+    '<input class="gin" id="g-code" type="password" placeholder="รหัสผ่าน" autocomplete="off"><div class="gmsg" id="g-msg" role="alert"></div>'+
+    '<div class="gbtns"><button type="button" class="btn" id="g-cancel">ยกเลิก</button><button type="button" class="btn pri" id="g-ok">เข้าสู่ระบบ</button></div>'+
+    (API_URL?'':'<p class="demo">โหมดตัวอย่าง: รหัสคือ 1234</p>')+'</div>';
+  $('gate').hidden=false;setTimeout(()=>$('g-code').focus(),50);
+  $('g-cancel').onclick=()=>{$('gate').hidden=true;};
+  const go=async()=>{
+    const code=$('g-code').value.trim(),m=$('g-msg'),b=$('g-ok');b.disabled=true;m.textContent='';
+    try{
+      if(!API_URL){if(code!==DEMO_CODE)throw new Error('รหัสผ่านไม่ถูกต้อง');ADMIN_CODE=code;WC={cfg:clone(CFG),crit:clone(P)};}
+      else{const j=await post({action:'admin_login',code});if(!j.ok)throw new Error(j.error||'รหัสผ่านไม่ถูกต้อง');ADMIN_CODE=code;WC={cfg:j.data.cfg,crit:j.data.criteria};}
+      $('gate').hidden=true;openSec={crit:true};showSettings();
+    }catch(err){m.textContent=err.message||'เข้าสู่ระบบไม่สำเร็จ';b.disabled=false;}
+  };
+  $('g-ok').onclick=go;$('g-code').onkeydown=e=>{if(e.key==='Enter')go();};
+}
+const critSummary=p=>['L','H'].map(l=>l+': '+(p.num?(+p[l][0]).toFixed(p.dec)+' – '+(+p[l][1]).toFixed(p.dec):p[l].join(', '))).join('   ·   ');
+function critEditor(p,i){
+  return ['L','H'].map(l=>{
+    const body=p.num
+      ?'<div class="rg"><label>ต่ำสุด<input class="sin" type="number" step="any" inputmode="decimal" data-cn="'+i+':'+l+':0" value="'+p[l][0]+'"></label><label>สูงสุด<input class="sin" type="number" step="any" inputmode="decimal" data-cn="'+i+':'+l+':1" value="'+p[l][1]+'"></label></div>'
+      :'<div class="chipsr">'+p.opts.map(o=>'<button type="button" class="sc'+(p[l].includes(o)?' on':'')+'" data-cc="'+i+':'+l+':'+esc(o)+'">'+esc(o)+'</button>').join('')+'</div>';
+    return '<div class="lvblock"><span class="tag '+l+'">'+ic('drop')+'Control-'+l+(p.num?' · ช่วงที่ผ่าน':' · ผลที่ผ่าน')+'</span>'+body+'</div>';
+  }).join('');
+}
+function listRows(arr,attr){
+  return arr.map((v,i)=>'<div class="lrow"><input class="sin" data-'+attr+'="'+i+'" value="'+esc(v)+'" placeholder="ชื่อ"><button type="button" class="iconbtn" data-sact="del-'+attr+':'+i+'" aria-label="ลบ">'+ic('trash')+'</button></div>').join('');
+}
+function showSettings(){
+  const c=WC.cfg;
+  const sec=(id,title,sub,body)=>'<details class="sec" data-sec="'+id+'"'+(openSec[id]?' open':'')+'><summary><span><b>'+title+'</b><small>'+sub+'</small></span></summary><div class="secb">'+body+'</div></details>';
+  const crit=WC.crit.map((p,i)=>'<details class="crow" data-sec="c'+i+'"'+(openSec['c'+i]?' open':'')+'><summary><b>'+p.ab+'</b><span>'+p.name+'</span><small>'+critSummary(p)+'</small></summary><div class="secb">'+critEditor(p,i)+'</div></details>').join('');
+  const sg=c.report.signers.map((s,i)=>'<div class="rg" style="margin-top:8px"><label>ตำแหน่ง<input class="sin" data-sg="'+i+':role" value="'+esc(s.role)+'"></label><label>ชื่อ (ว่างไว้ = เซ็นมือ)<input class="sin" data-sg="'+i+':name" value="'+esc(s.name)+'" placeholder="ชื่อ-สกุล"></label></div>').join('');
+  $('settings').innerHTML=
+    '<div class="sh-top"><div class="wrap"><button type="button" class="iconbtn" data-sact="close" aria-label="ปิด">'+ic('left')+'</button><h2>ตั้งค่า</h2></div></div>'+
+    '<div class="wrap sh-body">'+
+    sec('crit','เกณฑ์ผ่าน','ช่วงปกติของแต่ละรายการ (Control-L / H)',crit)+
+    sec('br','สาขา','เพิ่ม ลบ หรือเปลี่ยนชื่อสาขา',listRows(c.branches,'b').replace(/placeholder="ชื่อ"/g,'placeholder="ชื่อสาขา"')+'<button type="button" class="addbtn" data-sact="add-b">'+ic('plus')+'เพิ่มสาขา</button><div class="infonote">'+ic('info')+'<span>เปลี่ยนชื่อสาขาไม่ย้อนแก้ข้อมูลเก่าในชีต ข้อมูลเดิมยังใช้ชื่อเดิม</span></div>')+
+    sec('nm','ผู้บันทึก','รายชื่อให้เลือกที่หน้ากรอก (กันสะกดชื่อไม่ตรงกัน)','<label class="tgl"><span>ให้เลือกชื่อจากรายชื่อ</span><input type="checkbox" id="cfg-mode"'+(c.nameMode?' checked':'')+'></label>'+listRows(c.names,'n')+'<button type="button" class="addbtn" data-sact="add-n">'+ic('plus')+'เพิ่มชื่อ</button>')+
+    sec('ex','เตือนน้ำยาใกล้หมดอายุ','เตือนเมื่อ Exp เหลือไม่เกินกี่วัน','<div class="stepper"><button type="button" class="iconbtn" data-sact="days-m" aria-label="ลด">−</button><input class="sin" id="cfg-days" type="number" inputmode="numeric" min="1" max="365" value="'+c.expDays+'"><span>วัน</span><button type="button" class="iconbtn" data-sact="days-p" aria-label="เพิ่ม">+</button></div>')+
+    sec('rp','ข้อความในรายงาน','หัวรายงานและช่องลงนาม','<label class="lab">ชื่อหน่วยงาน<input class="sin" id="cfg-org" value="'+esc(c.report.org)+'"></label>'+sg)+
+    sec('pw','เปลี่ยนรหัสผ่าน','ใช้ร่วมกับแดชบอร์ดและการตั้งค่า','<label class="lab">รหัสเดิม<input class="sin" id="pw-old" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">รหัสใหม่<input class="sin" id="pw-new" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">ยืนยันรหัสใหม่<input class="sin" id="pw-new2" type="password" autocomplete="off"></label><button type="button" class="addbtn" data-sact="pass" style="border-style:solid">เปลี่ยนรหัสผ่าน</button>')+
+    '<div class="infonote">'+ic('info')+'<span>Lot/Exp ของน้ำยาและสตริป เปลี่ยนได้ที่หน้าแรกโดยไม่ต้องใส่รหัส</span></div></div>'+
+    '<div class="sh-dock"><div class="in"><button type="button" class="btn pri" data-sact="save">'+ic('save')+'<span>บันทึกการตั้งค่า</span></button></div></div>';
+  $('settings').hidden=false;
+}
+function rerenderSettings(){const s=$('settings').scrollTop;showSettings();$('settings').scrollTop=s;}
+$('settings').addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.sec)openSec[d.dataset.sec]=d.open;},true);
+$('settings').addEventListener('click',e=>{
+  const cc=e.target.closest('[data-cc]');
+  if(cc){const[i,l,o]=cc.dataset.cc.split(':'),p=WC.crit[+i],ix=p[l].indexOf(o);if(ix>=0)p[l].splice(ix,1);else p[l].push(o);p[l]=p.opts.filter(x=>p[l].includes(x));rerenderSettings();return;}
+  const a=e.target.closest('[data-sact]');if(!a)return;
+  const[k,v]=a.dataset.sact.split(':'),c=WC.cfg;
+  if(k==='close'){$('settings').hidden=true;}
+  else if(k==='add-b'){c.branches.push('');rerenderSettings();}
+  else if(k==='del-b'){if(c.branches.length<=1)return toast('ต้องมีอย่างน้อย 1 สาขา');c.branches.splice(+v,1);rerenderSettings();}
+  else if(k==='add-n'){c.names.push('');rerenderSettings();}
+  else if(k==='del-n'){c.names.splice(+v,1);rerenderSettings();}
+  else if(k==='days-m'||k==='days-p'){const x=parseInt($('cfg-days').value,10)||c.expDays;c.expDays=Math.max(1,Math.min(365,x+(k==='days-p'?5:-5)));$('cfg-days').value=c.expDays;}
+  else if(k==='save')saveSettings();
+  else if(k==='pass')changePass();
+});
+$('settings').addEventListener('input',e=>{
+  const t=e.target,c=WC.cfg;
+  if(t.dataset.b!==undefined)c.branches[+t.dataset.b]=t.value;
+  else if(t.dataset.n!==undefined)c.names[+t.dataset.n]=t.value;
+  else if(t.dataset.sg!==undefined){const[i,f]=t.dataset.sg.split(':');c.report.signers[+i][f]=t.value;}
+  else if(t.dataset.cn!==undefined){const[i,l,x]=t.dataset.cn.split(':');WC.crit[+i][l][+x]=t.value;}
+  else if(t.id==='cfg-org')c.report.org=t.value;
+  else if(t.id==='cfg-days')c.expDays=t.value;
+  else if(t.id==='cfg-mode')c.nameMode=t.checked;
+});
+async function saveSettings(){
+  const c=WC.cfg;
+  c.branches=c.branches.map(s=>s.trim()).filter(Boolean);
+  if(!c.branches.length)return toast('ต้องมีอย่างน้อย 1 สาขา');
+  if(new Set(c.branches).size!==c.branches.length)return toast('ชื่อสาขาซ้ำกัน');
+  c.names=c.names.map(s=>s.trim()).filter(Boolean);
+  if(new Set(c.names).size!==c.names.length)return toast('ชื่อผู้บันทึกซ้ำกัน');
+  c.expDays=Math.max(1,Math.min(365,parseInt(c.expDays,10)||30));
+  for(const p of WC.crit)for(const l of ['L','H']){
+    if(p.num){const a=parseFloat(p[l][0]),b=parseFloat(p[l][1]);if(isNaN(a)||isNaN(b)||a>b)return toast(p.ab+' Control-'+l+': ช่วงไม่ถูกต้อง');p[l]=[a,b];}
+    else if(!p[l].length)return toast(p.ab+' Control-'+l+': เลือกผลที่ผ่านอย่างน้อย 1 ค่า');
+  }
+  try{
+    if(API_URL){const j=await post({action:'admin_save',code:ADMIN_CODE,cfg:c,criteria:WC.crit});if(!j.ok)throw new Error(j.error||'บันทึกไม่สำเร็จ');}
+    Object.assign(CFG,clone(c));
+    P=clone(WC.crit);P.forEach(p=>{if(p.num)p.ph='เช่น '+((p[('L')][0]+p.L[1])/2).toFixed(p.dec);});
+    N=P.length;TOTAL=N*2;
+    if(!CFG.branches.includes(state.branch)){state.branch='';applySetup({});try{localStorage.removeItem('qcBranch');}catch(e){}}
+    $('settings').hidden=true;render();toast('บันทึกการตั้งค่าแล้ว');
+  }catch(err){toast('บันทึกไม่สำเร็จ: '+(err&&err.message||'ลองใหม่'));}
+}
+async function changePass(){
+  const o=$('pw-old').value,n=$('pw-new').value,n2=$('pw-new2').value;
+  if(o!==ADMIN_CODE)return toast('รหัสเดิมไม่ถูกต้อง');
+  if(n.length<4)return toast('รหัสใหม่ต้องยาวอย่างน้อย 4 ตัว');
+  if(n!==n2)return toast('รหัสใหม่ไม่ตรงกัน');
+  try{
+    if(API_URL){const j=await post({action:'admin_pass',code:ADMIN_CODE,newCode:n});if(!j.ok)throw new Error(j.error||'เปลี่ยนรหัสไม่สำเร็จ');}
+    else DEMO_CODE=n;
+    ADMIN_CODE=n;['pw-old','pw-new','pw-new2'].forEach(id=>$(id).value='');
+    toast('เปลี่ยนรหัสผ่านแล้ว (ใช้กับแดชบอร์ดด้วย)');
+  }catch(err){toast(err&&err.message||'เปลี่ยนรหัสไม่สำเร็จ');}
+}
+
+/* ---------- โหลดค่าตั้งค่าสาธารณะ (โหมดจริง) ---------- */
+async function loadConfig(){
+  if(!API_URL)return;
+  try{const j=await apiGet('config');if(j&&j.ok&&j.data){['branches','names','nameMode','expDays'].forEach(k=>{if(j.data[k]!==undefined)CFG[k]=j.data[k];});if(!CFG.branches.includes(state.branch))state.branch='';}}catch(err){}
+}
+
+/* ---------- โหลดเกณฑ์ผ่านจากแท็บ "เกณฑ์ผ่าน" ในชีต (โหมดจริง) ---------- */
 async function loadCriteria(){
   if(!API_URL){ready=true;return;}
   try{
@@ -574,17 +868,9 @@ async function loadCriteria(){
   }
   ready=true;
 }
-async function loadLot(){
-  if(!API_URL)return;
-  try{
-    const j=await apiGet('lot');
-    const lot=j&&j.ok&&j.data&&j.data.lot;
-    if(lot&&!state.info.lot){state.info.lot=String(lot);state.lotLocked=true;}
-  }catch(err){}
-}
 
 render();
-Promise.all([loadCriteria(),loadLot()]).then(()=>{ if(state.step===0)render(); else{paintTop();paintDock();} });
+Promise.all([loadCriteria(),loadConfig()]).then(()=>state.branch?selectBranch(state.branch):null).then(()=>{ if(state.step===0)render(); else{paintTop();paintDock();} });
 </script>
-</body>
+
 </html>
