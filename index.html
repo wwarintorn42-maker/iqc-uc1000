@@ -118,6 +118,11 @@ label.fl{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:0
 textarea.field{height:auto;padding:12px 14px;resize:vertical;min-height:88px;line-height:1.5}
 .field:focus{outline:none;border-color:var(--pri);background:var(--card);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
 .field::placeholder{color:var(--mute);opacity:.6}
+.toast{opacity:0;pointer-events:none}
+.toast.show{opacity:1}
+.lotlock{display:flex;align-items:center;gap:8px;height:54px;border:1.5px solid var(--line);border-radius:14px;padding:0 8px 0 14px;background:var(--soft);font-size:17px}
+.lotlock b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lotbtn{font:inherit;font-size:13px;font-weight:600;border:0;border-radius:10px;padding:8px 11px;white-space:nowrap;background:var(--card);color:var(--pri);cursor:pointer;box-shadow:inset 0 0 0 1.5px var(--line)}
 .field.num{font-size:24px;font-weight:600;height:62px;font-variant-numeric:tabular-nums}
 .g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}
 .g2>div{min-width:0}
@@ -225,14 +230,14 @@ let ready=false;            // true เมื่อโหลดเกณฑ์�
 
 /* ใส่ URL เว็บแอป Apps Script (ลงท้าย /exec) เมื่อนำไปใช้จริง
    ปล่อยว่างไว้ = โหมดตัวอย่าง ไม่บันทึกลงชีต */
-const API_URL='https://script.google.com/macros/s/AKfycbwIslcbqe6vLaCr9PSJ2Esmogj2sWZ6ckC8YaSGQXbL0NfOHrAOuw2pNAV2QjcM75Sm/exec';   // ลิงก์ Apps Script (เว็บแอป ลงท้าย /exec)
+const API_URL='https://script.google.com/macros/s/AKfycbwIslcbqe6vLaCr9PSJ2Esmogj2sWZ6ckC8YaSGQXbL0NfOHrAOuw2pNAV2QjcM75Sm/exec';   // <<< วางลิงก์ Apps Script (ลงท้าย /exec) ระหว่างเครื่องหมาย ' ' นี้
 
 /* ---------- สถานะ ----------
    step 0 = ข้อมูลทั่วไป, 1 = Control-L, 2 = Control-H, 3 = สรุปและบันทึก */
 const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(2,'0');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const state={step:0,info:{date:'',time:'',name:'',lot:''},vals:{L:{},H:{}},remark:'',showMiss:false,saving:false};
+const state={step:0,info:{date:'',time:'',name:'',lot:''},vals:{L:{},H:{}},remark:'',showMiss:false,saving:false,lotLocked:false};
 const lvOf=()=>state.step===1?'L':state.step===2?'H':null;
 function nowFill(){const d=new Date();state.info.date=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());state.info.time=pad(d.getHours())+':'+pad(d.getMinutes());}
 nowFill();
@@ -302,7 +307,7 @@ function viewInfo(){
   '<div><label class="fl" for="f-date">วันที่</label><input class="field" id="f-date" type="date" value="'+i.date+'"></div>'+
   '<div><label class="fl" for="f-time">เวลา</label><input class="field" id="f-time" type="time" value="'+i.time+'"></div>'+
   '<div><label class="fl" for="f-name">ผู้บันทึก</label><input class="field" id="f-name" placeholder="ชื่อ-สกุล" autocomplete="name" value="'+esc(i.name)+'"></div>'+
-  '<div><label class="fl" for="f-lot">Lot น้ำยา QC</label><input class="field" id="f-lot" placeholder="เช่น 123456" value="'+esc(i.lot)+'"></div>'+
+  '<div'+(state.lotLocked?' style="grid-column:1/-1"':'')+'>'+(state.lotLocked?'<label class="fl">Lot น้ำยา QC</label><div class="lotlock"><b>'+esc(i.lot)+'</b><button type="button" class="lotbtn" id="lot-change">เปลี่ยน Lot</button></div>':'<label class="fl" for="f-lot">Lot น้ำยา QC</label><input class="field" id="f-lot" placeholder="เช่น 123456" value="'+esc(i.lot)+'">')+'</div>'+
   '</div></div>'+
   (critWarn.length?'<div class="note warn">'+ic('alert')+'<span style="white-space:pre-line">'+esc(critWarn.join('\n'))+'</span></div>':'')+(!ready?'<div class="note">'+ic('info')+'<span>กำลังโหลดเกณฑ์ผ่านจากชีต...</span></div>':'')+'<div class="note">'+ic('info')+'<span>กรอก <b>Control-L</b> ให้ครบ '+N+' รายการ เลื่อนลงเรื่อยๆ ก่อน แล้วค่อยไปต่อที่ <b>Control-H</b> ระบบตรวจผ่าน/ไม่ผ่านให้ทันที</span></div>'+
   '</section>';
@@ -402,6 +407,7 @@ function toast(m){
 
 /* ---------- เหตุการณ์ ---------- */
 $('view').addEventListener('click',e=>{
+  if(e.target.closest('#lot-change')){state.lotLocked=false;render();setTimeout(()=>{const f=$('f-lot');if(f){f.focus();f.select();}},50);return;}
   const j=e.target.closest('[data-jump]');
   if(j){const[l,i]=j.dataset.jump.split(':');goItem(l,+i,false);return;}
   const c=e.target.closest('.chip'),l=lvOf();
@@ -489,7 +495,7 @@ function showDone(d,res){
   $('done').hidden=false;
   $('again').onclick=()=>{
     const keep={name:state.info.name,lot:state.info.lot};
-    state.vals={L:{},H:{}};state.remark='';nowFill();state.info.name=keep.name;state.info.lot=keep.lot;
+    state.vals={L:{},H:{}};state.remark='';nowFill();state.info.name=keep.name;state.info.lot=keep.lot;state.lotLocked=!!keep.lot;
     $('done').hidden=true;go(0);
   };
 }
@@ -511,8 +517,18 @@ async function loadCriteria(){
   ready=true;
 }
 
+async function loadLot(){
+  if(!API_URL)return;
+  try{
+    const r=await fetch(API_URL+(API_URL.indexOf('?')>=0?'&':'?')+'action=lot');
+    const j=await r.json();
+    const lot=j&&j.ok&&j.data&&j.data.lot;
+    if(lot&&!state.info.lot){state.info.lot=String(lot);state.lotLocked=true;}
+  }catch(err){}
+}
+
 render();
-loadCriteria().then(()=>{ if(state.step===0)render(); else{paintTop();paintDock();} });
+Promise.all([loadCriteria(),loadLot()]).then(()=>{ if(state.step===0)render(); else{paintTop();paintDock();} });
 </script>
 </body>
 </html>
