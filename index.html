@@ -89,6 +89,7 @@ main{padding-block:18px 150px}
 .tile small,.fcard small{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mute);font-weight:600}
 .tile b{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 .tile input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;background:none}
+.tile input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
 .tile:focus-within,.fcard:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
 .fcard{display:flex;flex-direction:column;gap:2px;margin-top:10px;background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:11px 14px}
 .bare{font-family:inherit;color:var(--fg);width:100%;border:0;background:none;padding:2px 0;font-size:19px;font-weight:600;outline:none;min-width:0}
@@ -623,6 +624,12 @@ async function addName(){
     state.nameOther=false;state.info.name=n;render();toast('เพิ่มชื่อในรายการแล้ว');
   }catch(err){toast(err&&err.message||'เพิ่มชื่อไม่สำเร็จ');}
 }
+
+/* คอมพิวเตอร์: คลิกที่ไหนในช่องวันที่/เวลา ให้เปิดตัวเลือกทันที */
+document.addEventListener('click',e=>{
+  const i=e.target.closest('.tile input');
+  if(i&&typeof i.showPicker==='function'){try{i.showPicker();}catch(err){}}
+});
 
 /* ---------- เหตุการณ์ ---------- */
 $('view').addEventListener('click',e=>{
