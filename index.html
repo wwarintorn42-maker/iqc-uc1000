@@ -99,6 +99,8 @@ main{padding-block:18px 150px}
 .lotcard .lt{flex:1;min-width:0}
 .lotcard small{display:block;font-size:12px;color:var(--mute);font-weight:600}
 .lotcard b{display:block;font-size:20px;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.addname{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:46px;border-radius:13px;border:1.5px dashed var(--line);background:none;color:var(--pri);font-weight:700;cursor:pointer;font-size:15px;font-family:var(--fh)}
+.addname .ic{width:18px;height:18px}
 .mini{font-size:13px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--pri);border-radius:11px;padding:8px 12px;cursor:pointer;white-space:nowrap}
 .gear{width:44px;height:44px;border-radius:14px;border:0;background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center;cursor:pointer}
 .gear .ic{width:22px;height:22px}
@@ -477,12 +479,13 @@ function setupCard(kind){
 }
 function nameField(){
   const names=CFG.nameMode?CFG.names:[],cur=state.info.name;
-  const txt=lbl=>'<label class="fcard"><small>'+ic('user')+lbl+'</small><input class="bare" id="f-name" placeholder="ชื่อ-สกุล" autocomplete="name" value="'+esc(cur)+'"></label>';
-  if(!names.length)return txt('ผู้บันทึก');
+  const txt=lbl=>'<label class="fcard"><small>'+ic('user')+lbl+'</small><input class="bare" id="f-name" placeholder="ชื่อ" autocomplete="name" value="'+esc(cur)+'"></label>';
+  const addBtn='<button type="button" class="addname" data-act="add-name">'+ic('plus')+'เพิ่มชื่อนี้ในรายการ</button>';
+  if(!names.length)return txt('ผู้บันทึก')+(CFG.nameMode?addBtn:'');
   const other=state.nameOther||(cur&&!names.includes(cur));
   return '<label class="fcard"><small>'+ic('user')+'ผู้บันทึก</small><select class="bare" id="f-name-sel"'+(cur||other?'':' style="color:var(--mute);font-weight:400"')+'><option value="">เลือกชื่อ</option>'+
     names.map(n=>'<option value="'+esc(n)+'"'+(!other&&cur===n?' selected':'')+'>'+esc(n)+'</option>').join('')+
-    '<option value="__other"'+(other?' selected':'')+'>อื่นๆ (พิมพ์เอง)</option></select></label>'+(other?txt('ชื่อ-สกุล'):'');
+    '<option value="__other"'+(other?' selected':'')+'>อื่นๆ (พิมพ์เอง)</option></select></label>'+(other?txt('ชื่อ')+addBtn:'');
 }
 function viewInfo(){
   const i=state.info,hasB=!!state.branch;
@@ -608,12 +611,26 @@ function toast(m){
   clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2600);
 }
 
+/* ---------- เพิ่มชื่อผู้บันทึกเข้ารายการ ---------- */
+async function addName(){
+  const n=String(state.info.name||'').replace(/\s+/g,' ').trim();
+  if(!n)return toast('พิมพ์ชื่อก่อน');
+  if(n.length>60)return toast('ชื่อยาวเกินไป');
+  if(CFG.names.includes(n)){state.nameOther=false;state.info.name=n;render();return toast('มีชื่อนี้ในรายการแล้ว');}
+  try{
+    if(API_URL){const j=await post({action:'add_name',name:n});if(!j.ok)throw new Error(j.error||'เพิ่มชื่อไม่สำเร็จ');CFG.names=j.data.names;}
+    else CFG.names.push(n);
+    state.nameOther=false;state.info.name=n;render();toast('เพิ่มชื่อในรายการแล้ว');
+  }catch(err){toast(err&&err.message||'เพิ่มชื่อไม่สำเร็จ');}
+}
+
 /* ---------- เหตุการณ์ ---------- */
 $('view').addEventListener('click',e=>{
   const act=e.target.closest('[data-act]');
   if(act){
     const k=act.dataset.act;
     if(k==='branch'){if(state.branch!==act.dataset.b)selectBranch(act.dataset.b);return;}
+    if(k==='add-name'){addName();return;}
     if(k==='edit-re'){state.editRe=true;render();setTimeout(()=>{const f=$('f-lot');if(f){f.focus();f.select();}},50);return;}
     if(k==='edit-strip'){state.editStrip=true;render();setTimeout(()=>{const f=$('f-slot');if(f){f.focus();f.select();}},50);return;}
   }
@@ -633,7 +650,7 @@ $('view').addEventListener('change',e=>{
   const t=e.target;
   if(t.id==='f-name-sel'){
     if(t.value==='__other'){state.nameOther=true;state.info.name='';render();setTimeout(()=>{const f=$('f-name');if(f)f.focus();},50);}
-    else{state.nameOther=false;state.info.name=t.value;t.style.color=t.value?'':'var(--mute)';t.style.fontWeight=t.value?'':'400';}
+    else{state.nameOther=false;state.info.name=t.value;render();}
   }
 });
 $('view').addEventListener('input',e=>{
@@ -769,7 +786,7 @@ function showSettings(){
   const c=WC.cfg;
   const sec=(id,title,sub,body)=>'<details class="sec" data-sec="'+id+'"'+(openSec[id]?' open':'')+'><summary><span><b>'+title+'</b><small>'+sub+'</small></span></summary><div class="secb">'+body+'</div></details>';
   const crit=WC.crit.map((p,i)=>'<details class="crow" data-sec="c'+i+'"'+(openSec['c'+i]?' open':'')+'><summary><b>'+p.ab+'</b><span>'+p.name+'</span><small>'+critSummary(p)+'</small></summary><div class="secb">'+critEditor(p,i)+'</div></details>').join('');
-  const sg=c.report.signers.map((s,i)=>'<div class="rg" style="margin-top:8px"><label>ตำแหน่ง<input class="sin" data-sg="'+i+':role" value="'+esc(s.role)+'"></label><label>ชื่อ (ว่างไว้ = เซ็นมือ)<input class="sin" data-sg="'+i+':name" value="'+esc(s.name)+'" placeholder="ชื่อ-สกุล"></label></div>').join('');
+  const sg=c.report.signers.map((s,i)=>'<div class="rg" style="margin-top:8px"><label>ตำแหน่ง<input class="sin" data-sg="'+i+':role" value="'+esc(s.role)+'"></label><label>ชื่อ (ว่างไว้ = เซ็นมือ)<input class="sin" data-sg="'+i+':name" value="'+esc(s.name)+'" placeholder="ชื่อ"></label></div>').join('');
   $('settings').innerHTML=
     '<div class="sh-top"><div class="wrap"><button type="button" class="iconbtn" data-sact="close" aria-label="ปิด">'+ic('left')+'</button><h2>ตั้งค่า</h2></div></div>'+
     '<div class="wrap sh-body">'+
