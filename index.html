@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IQC Sysmex UC-1000</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+/* แนวคิด: แอปมือถือกรอกทีละรายการ ทุกหน้าเห็น Control-L และ Control-H คู่กัน
+   พื้นสะอาด โทนฟ้าน้ำทะเล สีเขียว/แดงใช้กับผลผ่าน/ไม่ผ่านเท่านั้น */
+:root{
+  color-scheme:light;
+  --bg:#F3F7F8; --card:#FFFFFF; --soft:#F6FAFB; --ink:#243746; --mute:#647A88; --line:#DCE8EB;
+  --pri:#167D8D; --sec:#38A6AD; --deep:#15566B; --on-pri:#FFFFFF;
+  --Lt:#D9F0F1; --Lc:#15566B; --Ht:#FCE5ED; --Hc:#A93566;
+  --ok:#27865B; --okbg:#E4F3EB; --okline:#9BD2B4;
+  --warn:#B97A12; --warnbg:#FDF3E1; --warnline:#E5A23C;
+  --bad:#D65B65; --badbg:#FBEAEB; --badline:#EDA9AF;
+  --shadow:0 12px 28px -18px rgba(21,86,107,.45);
+  --font:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1D24; --card:#172831; --soft:#112229; --ink:#E6EFF2; --mute:#93A9B4; --line:#27404B;
+    --pri:#2FA3AE; --sec:#5CC3C8; --deep:#A9E1E4; --on-pri:#08262C;
+    --Lt:#1A3A42; --Lc:#A9E1E4; --Ht:#3A1F2B; --Hc:#F2A0BD;
+    --ok:#4CC38A; --okbg:#14342A; --okline:#2C6A50;
+    --warn:#F0B556; --warnbg:#382D14; --warnline:#8A6A22;
+    --bad:#EE7F88; --badbg:#3C1F23; --badline:#7C3A41;
+    --shadow:0 12px 28px -18px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1D24; --card:#172831; --soft:#112229; --ink:#E6EFF2; --mute:#93A9B4; --line:#27404B;
+  --pri:#2FA3AE; --sec:#5CC3C8; --deep:#A9E1E4; --on-pri:#08262C;
+  --Lt:#1A3A42; --Lc:#A9E1E4; --Ht:#3A1F2B; --Hc:#F2A0BD;
+  --ok:#4CC38A; --okbg:#14342A; --okline:#2C6A50;
+  --warn:#F0B556; --warnbg:#382D14; --warnline:#8A6A22;
+  --bad:#EE7F88; --badbg:#3C1F23; --badline:#7C3A41;
+  --shadow:0 12px 28px -18px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+button,input,textarea{font:inherit;color:inherit}
+.ic{width:1.15em;height:1.15em;flex:none}
+
+/* ===== โครง ===== */
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:var(--card);border-bottom:1px solid var(--line)}
+.top .wrap{padding-block:12px 10px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--deep),var(--sec));color:#fff;display:grid;place-items:center;flex:none}
+.mark .ic{width:22px;height:22px}
+.brand h1{margin:0;font-size:clamp(17px,4.8vw,20px);line-height:1.25;font-weight:700;text-wrap:balance}
+.brand p{margin:0;font-size:12.5px;color:var(--mute)}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:12px;font-size:13px}
+.meta b{font-weight:600}
+.meta span{color:var(--mute);font-variant-numeric:tabular-nums}
+.rail{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin-top:2px}
+.seg{border:0;background:none;padding:9px 0;cursor:pointer}
+.seg i{display:block;height:6px;border-radius:6px;background:var(--line);transition:background .2s}
+.seg.part i{background:var(--sec);opacity:.55}
+.seg.ok i{background:var(--ok)}
+.seg.bad i{background:var(--bad)}
+.seg:focus-visible{outline:2px solid var(--pri);outline-offset:1px;border-radius:6px}
+
+main{padding-block:18px 150px}
+/* ===== หัวข้อ Control และการ์ดรายการ ===== */
+.band{display:flex;align-items:center;gap:14px;border-radius:20px;padding:16px}
+.band.L{background:var(--Lt);color:var(--Lc)}
+.band.H{background:var(--Ht);color:var(--Hc)}
+.band .bi{width:46px;height:46px;border-radius:14px;background:var(--card);display:grid;place-items:center;flex:none}
+.band .bi .ic{width:25px;height:25px}
+.band h2{margin:0;font-size:24px;line-height:1.2;font-weight:700}
+.band p{margin:2px 0 0;font-size:13.5px;opacity:.92}
+.item{scroll-margin-top:150px;scroll-margin-bottom:120px}
+.ih{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px;min-width:0}
+.ih b{font-size:22px;font-weight:700}
+.ih span{color:var(--mute);font-size:13.5px}
+.page{animation:rise .22s ease-out}
+@keyframes rise{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.page{animation:none}*{transition:none!important}}
+.h2{margin:0;font-size:clamp(24px,7vw,30px);line-height:1.2;font-weight:700;letter-spacing:-.01em}
+.sub{margin:4px 0 0;color:var(--mute);font-size:14px}
+
+/* ===== การ์ด ===== */
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin-top:14px;box-shadow:var(--shadow);transition:border-color .2s,background .2s}
+.card.ok{border-color:var(--okline);background:linear-gradient(var(--okbg),var(--okbg)) ,var(--card)}
+.card.bad{border-color:var(--badline);background:linear-gradient(var(--badbg),var(--badbg)),var(--card)}
+.card.miss{border-color:var(--warnline);background:var(--warnbg)}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 9px;border-radius:99px;font-weight:700;font-size:14px}
+.tag.L{background:var(--Lt);color:var(--Lc)}
+.tag.H{background:var(--Ht);color:var(--Hc)}
+.st{display:flex;align-items:center;gap:5px;font-weight:600;font-size:14px;min-height:24px}
+.st.ok{color:var(--ok)}
+.st.bad{color:var(--bad)}
+.crit{margin:10px 0 12px;font-size:13.5px;color:var(--mute)}
+.crit b{color:var(--ink);font-weight:600}
+
+/* ===== ปุ่มเลือกค่า ===== */
+.chips{display:grid;gap:8px}
+.chip{min-height:58px;border:1.5px solid var(--line);background:var(--soft);border-radius:14px;font-size:clamp(17px,5vw,20px);font-weight:600;cursor:pointer;transition:transform .1s,background .15s,border-color .15s;padding:0 4px}
+.chip:active{transform:scale(.96)}
+.chip:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.chip.on{background:var(--pri);border-color:var(--pri);color:var(--on-pri)}
+.card.ok .chip.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.card.bad .chip.on{background:var(--bad);border-color:var(--bad);color:#fff}
+
+/* ===== ช่องกรอก ===== */
+label.fl{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:0 0 6px}
+.field{width:100%;height:54px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;background:var(--soft);font-size:17px;transition:border-color .15s,box-shadow .15s}
+textarea.field{height:auto;padding:12px 14px;resize:vertical;min-height:88px;line-height:1.5}
+.field:focus{outline:none;border-color:var(--pri);background:var(--card);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
+.field::placeholder{color:var(--mute);opacity:.6}
+.field.num{font-size:24px;font-weight:600;height:62px;font-variant-numeric:tabular-nums}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}
+.g2>div{min-width:0}
+input[type=date].field,input[type=time].field{-webkit-appearance:none;appearance:none;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;min-width:0;padding:0 10px}
+input[type=date].field::-webkit-date-and-time-value,input[type=time].field::-webkit-date-and-time-value{text-align:center;margin:0 auto;min-height:1.2em}
+input[type=date].field::-webkit-datetime-edit,input[type=time].field::-webkit-datetime-edit{padding:0;display:flex;justify-content:center;align-items:center}
+input[type=date].field::-webkit-calendar-picker-indicator,input[type=time].field::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+
+/* ===== สรุปผล ===== */
+.res{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.rc{border:1.5px solid var(--line);border-radius:16px;padding:14px;background:var(--card);min-width:0}
+.rc.ok{border-color:var(--okline);background:var(--okbg)}
+.rc.bad{border-color:var(--badline);background:var(--badbg)}
+.rc.miss{border-color:var(--warnline);background:var(--warnbg)}
+.rc .big{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:20px;font-weight:700}
+.rc.ok .big{color:var(--ok)} .rc.bad .big{color:var(--bad)} .rc.miss .big{color:var(--warn)}
+.rc small{display:block;margin-top:2px;font-size:12.5px;color:var(--mute);overflow-wrap:anywhere}
+.tbl{margin-top:14px;padding:6px 14px}
+.tr{display:grid;grid-template-columns:minmax(0,1fr) 88px 88px;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;cursor:pointer}
+.tr:first-child{border-top:0}
+.tr b{font-size:15px}
+.tr em{font-style:normal;color:var(--mute);font-size:12.5px;display:block;line-height:1.2}
+.th{display:grid;grid-template-columns:minmax(0,1fr) 88px 88px;gap:8px;padding:8px 0 4px;font-size:12px;font-weight:700;color:var(--mute);letter-spacing:.04em}
+.th span:not(:first-child){text-align:center}
+.pill{display:flex;align-items:center;justify-content:center;gap:4px;min-height:32px;border-radius:10px;font-size:14px;font-weight:600;background:var(--soft);color:var(--mute);font-variant-numeric:tabular-nums}
+.pill.ok{background:var(--okbg);color:var(--ok)}
+.pill.bad{background:var(--badbg);color:var(--bad)}
+.pill .ic{width:1em;height:1em}
+button.pill{border:0;width:100%;cursor:pointer;padding:0 4px}
+button.pill:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
+.note{display:flex;gap:10px;align-items:flex-start;border-radius:14px;padding:12px 14px;margin-top:14px;font-size:14px;background:var(--Lt);color:var(--Lc)}
+.note.warn{background:var(--warnbg);color:var(--warn)}
+.note.ok{background:var(--okbg);color:var(--ok)}
+.note .ic{margin-top:2px}
+.foot{margin:28px 0 0;text-align:center;font-size:12.5px;color:var(--mute)}
+
+/* ===== แถบล่าง ===== */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:9;background:color-mix(in srgb,var(--card) 94%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.dock .in{max-width:528px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;border-radius:15px;border:1.5px solid var(--line);background:var(--card);font-size:17px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .15s}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.btn.pri{border:0;background:linear-gradient(135deg,var(--deep),var(--pri) 55%,var(--sec));color:#fff;box-shadow:0 12px 22px -14px var(--pri)}
+.btn:disabled{opacity:.55}
+.dock .back[hidden]{display:block!important;visibility:hidden}
+
+/* ===== แจ้งเตือน / เสร็จสิ้น ===== */
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translate(-50%,-140%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-size:14px;font-weight:500;z-index:30;max-width:calc(100% - 32px);transition:transform .3s}
+.toast.show{transform:translate(-50%,0)}
+.done{position:fixed;inset:0;z-index:40;background:rgba(10,30,38,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px}
+.dbox{background:var(--card);border-radius:24px;padding:28px 22px 22px;max-width:380px;width:100%;text-align:center}
+.dbadge{width:72px;height:72px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center}
+.dbadge .ic{width:36px;height:36px}
+.dbadge.ok{background:var(--okbg);color:var(--ok)} .dbadge.bad{background:var(--badbg);color:var(--bad)}
+.dbox h2{margin:0 0 12px;font-size:24px}
+.dline{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:var(--soft);margin-top:8px;font-size:14.5px;font-weight:600;text-align:left}
+.dline.ok span:last-child{color:var(--ok)} .dline.bad span:last-child{color:var(--bad)}
+.dbox .demo{margin:14px 0 0;font-size:12.5px;color:var(--warn);background:var(--warnbg);border-radius:10px;padding:8px 10px}
+.dbox .btn{width:100%;margin-top:16px}
+@media (min-width:600px){.chip{min-height:62px}}
+@media (max-width:350px){.tr,.th{grid-template-columns:minmax(0,1fr) 74px 74px}.res{grid-template-columns:1fr}}
+[hidden]{display:none!important}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">
+    <div class="mark" id="mark"></div>
+    <div style="min-width:0"><h1>IQC เครื่องตรวจวิเคราะห์ตะกอนปัสสาวะ</h1><p>ยี่ห้อ Sysmex รุ่น UC-1000 · โรงพยาบาลระยอง</p></div>
+  </div>
+  <div class="meta"><b id="stepName"></b><span id="count"></span></div>
+  <div class="rail" id="rail" role="tablist" aria-label="รายการตรวจ"></div>
+</div></header>
+
+<main class="wrap"><div id="view"></div><p class="foot">พัฒนาโดย ทนพ.วรินทร แสงหิรัญรัตนา</p></main>
+
+<nav class="dock"><div class="in">
+  <button type="button" class="btn back" id="back">ย้อนกลับ</button>
+  <button type="button" class="btn pri" id="next"></button>
+</div></nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="done" id="done" hidden></div>
+
+<script>
+/* ---------- เกณฑ์ผ่าน (เรียงตามไฟล์ QC_Urine.xlsx) ---------- */
+const S=['-','1+','2+','3+','4+'];
+const LV=['L','H'];
+let P=[
+ {k:'URO',ab:'URO',name:'Urobilinogen',opts:['normal','1+','2+','3+','4+'],L:['normal'],H:['1+','2+','3+','4+']},
+ {k:'BLD',ab:'BLD',name:'Blood',opts:S,L:['-'],H:['1+','2+','3+']},
+ {k:'BIL',ab:'BIL',name:'Bilirubin',opts:S,L:['-','1+'],H:['1+','2+','3+']},
+ {k:'KET',ab:'KET',name:'Ketones',opts:S,L:['-'],H:['1+','2+','3+']},
+ {k:'GLU',ab:'GLU',name:'Glucose',opts:S,L:['-'],H:['1+','2+','3+']},
+ {k:'PRO',ab:'PRO',name:'Protein',opts:S,L:['-'],H:['1+','2+','3+','4+']},
+ {k:'pH',ab:'pH',name:'pH',num:true,dec:1,ph:'เช่น 5.5',L:[5.0,6.0],H:[7.0,9.0]},
+ {k:'NIT',ab:'NIT',name:'Nitrite',opts:['-','+'],L:['-'],H:['+']},
+ {k:'LEU',ab:'LEU',name:'Leukocytes',opts:S,L:['-'],H:['2+','3+']},
+ {k:'SG',ab:'S.G',name:'Specific gravity',num:true,dec:3,ph:'เช่น 1.015',L:[1.000,1.025],H:[1.010,1.030]}
+];
+let N=P.length, TOTAL=N*2;
+let critWarn=[];            // ข้อความเตือนเรื่องตารางเกณฑ์
+let ready=false;            // true เมื่อโหลดเกณฑ์เสร็จ (หรือไม่ต้องโหลด)
+
+/* ใส่ URL เว็บแอป Apps Script (ลงท้าย /exec) เมื่อนำไปใช้จริง
+   ปล่อยว่างไว้ = โหมดตัวอย่าง ไม่บันทึกลงชีต */
+const API_URL='https://script.google.com/macros/s/AKfycbwIslcbqe6vLaCr9PSJ2Esmogj2sWZ6ckC8YaSGQXbL0NfOHrAOuw2pNAV2QjcM75Sm/exec';   // ลิงก์ Apps Script (เว็บแอป ลงท้าย /exec)
+
+/* ---------- สถานะ ----------
+   step 0 = ข้อมูลทั่วไป, 1 = Control-L, 2 = Control-H, 3 = สรุปและบันทึก */
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const state={step:0,info:{date:'',time:'',name:'',lot:''},vals:{L:{},H:{}},remark:'',showMiss:false,saving:false};
+const lvOf=()=>state.step===1?'L':state.step===2?'H':null;
+function nowFill(){const d=new Date();state.info.date=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());state.info.time=pad(d.getHours())+':'+pad(d.getMinutes());}
+nowFill();
+try{state.info.name=localStorage.getItem('qcName')||'';}catch(e){}
+
+/* ---------- ไอคอน ---------- */
+const IC={
+ check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+ x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ drop:'<path d="M12 3s6.5 6.6 6.5 11A6.5 6.5 0 0 1 5.5 14C5.5 9.6 12 3 12 3z"/>',
+ flask:'<path d="M9 3h6M10 3v6L5 19a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 19l-5-10V3"/><path d="M8 15h8"/>',
+ left:'<path d="M15 5l-7 7 7 7"/>',
+ right:'<path d="M9 5l7 7-7 7"/>',
+ save:'<path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/>',
+ alert:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/>'
+};
+const ic=n=>'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>';
+$('mark').innerHTML=ic('flask');
+
+/* ---------- ตัดสินผ่าน/ไม่ผ่าน: true / false / null ---------- */
+function judge(p,l){
+  const v=state.vals[l][p.k];
+  if(v===undefined||v==='')return null;
+  if(p.num){const n=parseFloat(v);if(isNaN(n))return null;const[a,b]=p[l];return n>=a-1e-9&&n<=b+1e-9;}
+  return p[l].includes(v);
+}
+const rangeText=(p,l)=>p.num?p[l][0].toFixed(p.dec)+' – '+p[l][1].toFixed(p.dec):p[l].join('   /   ');
+function stat(){
+  const fails={L:[],H:[]},cnt={L:0,H:0};
+  P.forEach(p=>LV.forEach(l=>{const j=judge(p,l);if(j!==null)cnt[l]++;if(j===false)fails[l].push(p.ab);}));
+  return{filled:cnt.L+cnt.H,fails,cnt};
+}
+function firstMissing(){
+  for(const l of LV){const i=P.findIndex(p=>judge(p,l)===null);if(i>=0)return{l,i};}
+  return null;
+}
+
+/* ---------- ส่วนหัว ---------- */
+function paintTop(){
+  const s=stat(),l=lvOf();
+  $('count').textContent=l?'กรอกแล้ว '+s.cnt[l]+' / '+N:'L '+s.cnt.L+'/'+N+'  ·  H '+s.cnt.H+'/'+N;
+  $('stepName').textContent=state.step===0?'ข้อมูลทั่วไป':l?'Control-'+l:'สรุปและบันทึก';
+  $('rail').hidden=!l;
+  if(l){
+    $('rail').innerHTML=P.map((p,i)=>{const j=judge(p,l);
+      return '<button type="button" class="seg '+(j===null?'':j?'ok':'bad')+'" data-scroll="'+i+'" aria-label="'+p.ab+'"><i></i></button>';}).join('');
+  }
+}
+/* ---------- แถบล่าง ---------- */
+function paintDock(){
+  const b=$('back'),n=$('next');
+  b.hidden=state.step===0;
+  b.innerHTML=ic('left')+'<span>ย้อนกลับ</span>';
+  n.disabled=state.saving||!ready;
+  if(state.step===0)n.innerHTML='<span>เริ่มกรอก Control-L</span>'+ic('right');
+  else if(state.step===1)n.innerHTML='<span>ไปกรอก Control-H</span>'+ic('right');
+  else if(state.step===2)n.innerHTML='<span>สรุปผล</span>'+ic('right');
+  else n.innerHTML=ic('save')+'<span>'+(state.saving?'กำลังบันทึก...':'บันทึกผล')+'</span>';
+}
+
+/* ---------- หน้า 0: ข้อมูลทั่วไป ---------- */
+function viewInfo(){
+  const i=state.info;
+  return '<section class="page"><h2 class="h2">เริ่มบันทึก QC</h2><p class="sub">ตรวจข้อมูลด้านล่าง แล้วกดเริ่มกรอก</p>'+
+  '<div class="card"><div class="g2">'+
+  '<div><label class="fl" for="f-date">วันที่</label><input class="field" id="f-date" type="date" value="'+i.date+'"></div>'+
+  '<div><label class="fl" for="f-time">เวลา</label><input class="field" id="f-time" type="time" value="'+i.time+'"></div>'+
+  '<div><label class="fl" for="f-name">ผู้บันทึก</label><input class="field" id="f-name" placeholder="ชื่อ-สกุล" autocomplete="name" value="'+esc(i.name)+'"></div>'+
+  '<div><label class="fl" for="f-lot">Lot น้ำยา QC</label><input class="field" id="f-lot" placeholder="เช่น 123456" value="'+esc(i.lot)+'"></div>'+
+  '</div></div>'+
+  (critWarn.length?'<div class="note warn">'+ic('alert')+'<span style="white-space:pre-line">'+esc(critWarn.join('\n'))+'</span></div>':'')+(!ready?'<div class="note">'+ic('info')+'<span>กำลังโหลดเกณฑ์ผ่านจากชีต...</span></div>':'')+'<div class="note">'+ic('info')+'<span>กรอก <b>Control-L</b> ให้ครบ '+N+' รายการ เลื่อนลงเรื่อยๆ ก่อน แล้วค่อยไปต่อที่ <b>Control-H</b> ระบบตรวจผ่าน/ไม่ผ่านให้ทันที</span></div>'+
+  '</section>';
+}
+
+/* ---------- หน้า 1-2: รายการของ Control-L / Control-H ---------- */
+function statHTML(j){return j===null?'':j?ic('check')+'ผ่าน':ic('x')+'ไม่ผ่าน';}
+function itemHTML(p,l,i){
+  const j=judge(p,l),v=state.vals[l][p.k];
+  const cls=j===true?' ok':j===false?' bad':(state.showMiss&&j===null?' miss':'');
+  let inp;
+  if(p.num){
+    inp='<input class="field num" id="n-'+i+'" type="number" inputmode="decimal" step="any" placeholder="'+p.ph+'" value="'+(v===undefined?'':esc(v))+'" aria-label="'+p.ab+' Control-'+l+'">';
+  }else{
+    inp='<div class="chips" style="grid-template-columns:'+p.opts.map(o=>o.length>2?'1.9fr':'1fr').join(' ')+'">'+
+      p.opts.map(o=>'<button type="button" class="chip'+(v===o?' on':'')+'" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('')+'</div>';
+  }
+  return '<div class="card item'+cls+'" id="c-'+i+'" data-i="'+i+'"><div class="ch"><div class="ih"><b>'+p.ab+'</b><span>'+p.name+'</span></div>'+
+    '<span class="st '+(j===true?'ok':j===false?'bad':'')+'" id="s-'+i+'">'+statHTML(j)+'</span></div>'+
+    '<p class="crit">เกณฑ์ผ่าน <b>'+rangeText(p,l)+'</b></p>'+inp+'</div>';
+}
+function viewLevel(l){
+  const next=l==='L'?'Control-H':'สรุปผล';
+  return '<section class="page"><div class="band '+l+'"><div class="bi">'+ic('drop')+'</div><div><h2>Control-'+l+'</h2><p>กรอกให้ครบ '+N+' รายการ แล้วไปต่อที่ '+next+'</p></div></div>'+
+    P.map((p,i)=>itemHTML(p,l,i)).join('')+
+    '<div class="note ok" id="endn" hidden>'+ic('check')+'<span>กรอกครบ '+N+' รายการแล้ว กด “'+(l==='L'?'ไปกรอก Control-H':'สรุปผล')+'” ด้านล่างได้เลย</span></div></section>';
+}
+function patchCard(i,l){
+  const j=judge(P[i],l),c=$('c-'+i);if(!c)return;
+  c.classList.toggle('ok',j===true);c.classList.toggle('bad',j===false);c.classList.remove('miss');
+  const st=$('s-'+i);st.className='st '+(j===true?'ok':j===false?'bad':'');st.innerHTML=statHTML(j);
+}
+function patchEnd(){
+  const l=lvOf(),e=$('endn');
+  if(l&&e)e.hidden=stat().cnt[l]<N;
+}
+function scrollToItem(i){const el=$('c-'+i);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function scrollNext(i,l){
+  let j=-1;
+  for(let k=i+1;k<N;k++){if(judge(P[k],l)===null){j=k;break;}}
+  if(j<0)j=P.findIndex(p=>judge(p,l)===null);
+  if(j>=0)scrollToItem(j);
+  else{const e=$('endn');if(e)e.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+
+/* ---------- หน้า 3: สรุป ---------- */
+function cell(p,i,l){
+  const j=judge(p,l),v=state.vals[l][p.k];
+  const body=j===null?'–':ic(j?'check':'x')+esc(v);
+  return'<button type="button" class="pill '+(j===null?'':j?'ok':'bad')+'" data-jump="'+l+':'+i+'" aria-label="'+p.ab+' Control-'+l+'">'+body+'</button>';
+}
+function viewSummary(){
+  const s=stat();
+  const rc=l=>{
+    const done=s.cnt[l]===N,bad=s.fails[l].length;
+    const cls=!done?'miss':bad?'bad':'ok';
+    const txt=!done?'ยังไม่ครบ':bad?'ไม่ผ่าน '+bad:'ผ่าน';
+    const sm=!done?'กรอกแล้ว '+s.cnt[l]+' / '+N:bad?s.fails[l].join(', '):'ทุกรายการอยู่ในเกณฑ์';
+    return'<div class="rc '+cls+'"><span class="tag '+l+'">'+ic('drop')+'Control-'+l+'</span><div class="big">'+ic(!done?'alert':bad?'x':'check')+txt+'</div><small>'+esc(sm)+'</small></div>';
+  };
+  const miss=TOTAL-s.filled,nf=s.fails.L.length+s.fails.H.length;
+  const note=miss?'<div class="note warn">'+ic('alert')+'<span>ยังกรอกไม่ครบ '+miss+' ช่อง แตะช่องในตารางเพื่อกลับไปกรอก</span></div>'
+    :nf?'<div class="note warn">'+ic('alert')+'<span>มีรายการไม่ผ่าน ควรบันทึกการแก้ไขหรือการวัดซ้ำในหมายเหตุ</span></div>'
+    :'<div class="note ok">'+ic('check')+'<span>กรอกครบและผ่านทุกรายการ กดบันทึกผลได้เลย</span></div>';
+  const rows=P.map((p,i)=>'<div class="tr"><span><b>'+p.ab+'</b><em>'+p.name+'</em></span>'+cell(p,i,'L')+cell(p,i,'H')+'</div>').join('');
+  const i=state.info;
+  return '<section class="page"><h2 class="h2">สรุปผล QC</h2><p class="sub">'+esc(i.date)+' · '+esc(i.time)+' · '+(esc(i.name)||'ยังไม่ระบุผู้บันทึก')+' · Lot '+(esc(i.lot)||'–')+'</p>'+
+    '<div class="res">'+rc('L')+rc('H')+'</div>'+note+
+    '<div class="card tbl"><div class="th"><span>รายการ</span><span>L</span><span>H</span></div>'+rows+'</div>'+
+    '<div class="card"><label class="fl" for="f-remark">หมายเหตุ / การแก้ไข</label><textarea class="field" id="f-remark" placeholder="เช่น วัดซ้ำแล้วผ่าน / เปลี่ยนน้ำยา">'+esc(state.remark)+'</textarea></div></section>';
+}
+
+/* ---------- วาดหน้า / เปลี่ยนหน้า ---------- */
+function render(){
+  const l=lvOf();
+  $('view').innerHTML=state.step===0?viewInfo():l?viewLevel(l):viewSummary();
+  paintTop();paintDock();patchEnd();
+}
+function go(n,noTop){
+  state.step=Math.max(0,Math.min(3,n));
+  state.showMiss=false;
+  render();
+  if(!noTop)window.scrollTo({top:0,behavior:'smooth'});
+}
+function goItem(l,i,markMiss){ // ไปที่ Control-L/H แล้วเลื่อนไปรายการนั้น
+  go(l==='L'?1:2,true);
+  if(markMiss){
+    state.showMiss=true;
+    P.forEach((p,k)=>{if(judge(p,l)===null){const c=$('c-'+k);if(c)c.classList.add('miss');}});
+  }
+  setTimeout(()=>scrollToItem(i),60);
+}
+function toast(m){
+  const t=$('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* ---------- เหตุการณ์ ---------- */
+$('view').addEventListener('click',e=>{
+  const j=e.target.closest('[data-jump]');
+  if(j){const[l,i]=j.dataset.jump.split(':');goItem(l,+i,false);return;}
+  const c=e.target.closest('.chip'),l=lvOf();
+  if(c&&l){
+    const card=c.closest('.item'),i=+card.dataset.i,p=P[i];
+    const was=judge(p,l)!==null;
+    state.vals[l][p.k]=c.dataset.v;
+    card.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));
+    patchCard(i,l);paintTop();patchEnd();
+    if(!was)setTimeout(()=>{if(lvOf()===l)scrollNext(i,l);},380); // กรอกแล้ว เลื่อนไปรายการถัดไปให้
+  }
+});
+$('view').addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='f-date')state.info.date=t.value;
+  else if(t.id==='f-time')state.info.time=t.value;
+  else if(t.id==='f-name')state.info.name=t.value;
+  else if(t.id==='f-lot')state.info.lot=t.value;
+  else if(t.id==='f-remark')state.remark=t.value;
+  else if(t.id.slice(0,2)==='n-'&&lvOf()){
+    const i=+t.id.slice(2),l=lvOf();
+    state.vals[l][P[i].k]=t.value;patchCard(i,l);paintTop();patchEnd();
+  }
+});
+$('view').addEventListener('keydown',e=>{ // กด Enter ในช่องตัวเลข เลื่อนไปรายการถัดไป
+  const t=e.target,l=lvOf();
+  if(e.key==='Enter'&&l&&t.id&&t.id.slice(0,2)==='n-'){
+    e.preventDefault();const i=+t.id.slice(2);
+    if(judge(P[i],l)!==null){t.blur();scrollNext(i,l);}
+  }
+});
+$('rail').addEventListener('click',e=>{const g=e.target.closest('[data-scroll]');if(g)scrollToItem(+g.dataset.scroll);});
+$('back').onclick=()=>go(state.step-1);
+$('next').onclick=()=>{
+  const l=lvOf();
+  if(state.step===0){
+    if(!state.info.name.trim()){toast('กรอกชื่อผู้บันทึกก่อน');const f=$('f-name');if(f)f.focus();return;}
+    if(!state.info.lot.trim()){toast('กรอก Lot ก่อน');const f=$('f-lot');if(f)f.focus();return;}
+    go(1);
+  }else if(l){
+    const s=stat();
+    if(s.cnt[l]<N){ // ต้องกรอกให้ครบก่อนไปต่อ
+      const i=P.findIndex(p=>judge(p,l)===null);
+      goItem(l,i,true);
+      toast('Control-'+l+' ยังเหลือ '+(N-s.cnt[l])+' รายการ');
+      return;
+    }
+    go(state.step+1);
+  }else save();
+};
+
+/* ---------- บันทึก ---------- */
+async function save(){
+  if(state.saving)return;
+  const i=state.info,s=stat();
+  if(!i.name.trim()){toast('กรอกชื่อผู้บันทึกก่อน');go(0);return;}
+  if(!i.lot.trim()){toast('กรอก Lot ก่อน');go(0);return;}
+  if(s.filled<TOTAL){const m=firstMissing();toast('ยังกรอกไม่ครบ '+(TOTAL-s.filled)+' ช่อง');goItem(m.l,m.i,true);return;}
+  const data={date:i.date,time:i.time,name:i.name.trim(),lot:i.lot.trim(),remark:state.remark.trim(),
+    L:{values:state.vals.L,fails:s.fails.L,pass:s.fails.L.length===0},
+    H:{values:state.vals.H,fails:s.fails.H,pass:s.fails.H.length===0}};
+  try{localStorage.setItem('qcName',data.name);}catch(e){}
+  state.saving=true;paintDock();
+  try{
+    let res;
+    if(API_URL){
+      const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',payload:data})});
+      const j=await r.json();if(!j.ok)throw new Error(j.error||'บันทึกไม่สำเร็จ');res=j.data;
+    }else{
+      await new Promise(r=>setTimeout(r,600));res={tab:data.date.slice(0,7),demo:true};
+    }
+    showDone(data,res);
+  }catch(err){
+    toast('บันทึกไม่สำเร็จ: '+(err&&err.message?err.message:'ลองใหม่อีกครั้ง'));
+  }finally{state.saving=false;paintDock();}
+}
+function showDone(d,res){
+  const all=d.L.pass&&d.H.pass;
+  const line=(l,x)=>'<div class="dline '+(x.pass?'ok':'bad')+'"><span>Control-'+l+'</span><span>'+(x.pass?'ผ่าน':'ไม่ผ่าน: '+esc(x.fails.join(', ')))+'</span></div>';
+  $('done').innerHTML='<div class="dbox" role="dialog" aria-modal="true"><div class="dbadge '+(all?'ok':'bad')+'">'+ic(all?'check':'x')+'</div>'+
+    '<h2>'+(all?'QC ผ่านทั้งหมด':'QC ไม่ผ่าน')+'</h2>'+line('L',d.L)+line('H',d.H)+
+    '<p class="sub" style="margin-top:12px">บันทึกลงชีต '+esc(res.tab)+' แล้ว (2 แถว)</p>'+
+    (res.demo?'<p class="demo">โหมดตัวอย่าง: หน้านี้ยังไม่ได้ต่อกับ Google Sheet จึงไม่ได้บันทึกข้อมูลจริง</p>':'')+
+    '<button type="button" class="btn pri" id="again">บันทึกรายการใหม่</button></div>';
+  $('done').hidden=false;
+  $('again').onclick=()=>{
+    const keep={name:state.info.name,lot:state.info.lot};
+    state.vals={L:{},H:{}};state.remark='';nowFill();state.info.name=keep.name;state.info.lot=keep.lot;
+    $('done').hidden=true;go(0);
+  };
+}
+
+/* ---------- โหลดเกณฑ์ผ่านจากแท็บ "เกณฑ์ผ่าน" ในชีต ---------- */
+async function loadCriteria(){
+  if(!API_URL){ready=true;return;}
+  try{
+    const r=await fetch(API_URL+(API_URL.indexOf('?')>=0?'&':'?')+'action=criteria');
+    const j=await r.json();
+    if(!j.ok||!j.data||!j.data.items||!j.data.items.length)throw new Error(j.error||'ไม่พบข้อมูลเกณฑ์');
+    P=j.data.items;
+    P.forEach(p=>{if(p.num)p.ph='เช่น '+((p.L[0]+p.L[1])/2).toFixed(p.dec);});
+    N=P.length;TOTAL=N*2;
+    critWarn=j.data.errors||[];
+  }catch(err){
+    critWarn=['โหลดเกณฑ์จากชีตไม่สำเร็จ ใช้เกณฑ์สำรองในหน้านี้แทน (ตรวจอินเทอร์เน็ตแล้วรีเฟรช)'];
+  }
+  ready=true;
+}
+
+render();
+loadCriteria().then(()=>{ if(state.step===0)render(); else{paintTop();paintDock();} });
+</script>
+</body>
+</html>
