@@ -368,6 +368,17 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 .fxres .chip{min-height:50px;font-size:16px}
 .dbox .btn.alt{background:var(--soft);box-shadow:none;margin-top:10px}
 .dbox .fxline{margin-top:8px;font-size:13.5px;color:var(--mute)}
+
+/* ===== เข้าชุดกับแดชบอร์ด v6: การ์ดเส้นขอบบาง + ไอคอนวงกลมพาสเทล + กรอบลอยบนจอใหญ่ ===== */
+.panel,.card,.sec{border-radius:18px;box-shadow:none;border:1px solid var(--line)}
+.card.ok{border-color:var(--okline)}.card.bad{border-color:var(--badline)}
+label.fl .ic,.plabel .ic{width:26px;height:26px;padding:5px;border-radius:50%;background:var(--Lt);color:var(--pri);flex:none;stroke-width:2.2}
+.tile small .ic,.fcard small .ic{width:22px;height:22px;padding:4px;border-radius:50%;background:var(--Lt);color:var(--pri);stroke-width:2.2}
+@media (min-width:700px){
+  html{background:#DCEBEB}
+  body{max-width:520px;margin:24px auto;border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 70px -34px rgba(13,79,86,.5)}
+  .dock{left:50%;right:auto;width:min(520px,100%);transform:translateX(-50%)}
+}
 </style>
 
 <header id="top"></header>
