@@ -340,12 +340,12 @@ try{state.info.name=localStorage.getItem('qcName')||'';}catch(e){}
 
 
 /* ---------- ตัวอย่าง: Lot ปัจจุบันที่ระบบจำไว้ (ของจริงดึงจากชีต) ---------- */
-/* ---------- สาขา + น้ำยา Control + สตริป UC-10S ---------- */
+/* ---------- สาขา + UC-Control + Strip UC-10S ---------- */
 const CFG={
   branches:['เกาะหวาย','ตะพง','เนินพระ'],
   names:['สมชาย','สุดา','วรินทร','มานี'],
   nameMode:true,          // true = เลือกชื่อจากรายชื่อ
-  expDays:30,             // เตือนเมื่อน้ำยาเหลือไม่เกินกี่วัน
+  expDays:30,             // เตือนเมื่อ UC-Control เหลือไม่เกินกี่วัน
   report:{org:'โรงพยาบาลระยอง · ห้องปฏิบัติการ',signers:[{role:'ผู้จัดทำรายงาน',name:''},{role:'ผู้ตรวจสอบ',name:''},{role:'หัวหน้าห้องปฏิบัติการ',name:''}]}
 };
 /* ข้อมูลตัวอย่างในโหมดร่าง (ของจริงดึงจากชีตตามสาขา) */
@@ -380,7 +380,7 @@ async function selectBranch(b){
   try{
     if(!API_URL)applySetup(DEMO_SETUP[b]);
     else{const j=await apiGet('setup&branch='+encodeURIComponent(b));applySetup(j&&j.ok?j.data:{});}
-  }catch(err){applySetup({});toast('โหลดข้อมูลน้ำยาไม่สำเร็จ กรอกเองได้');}
+  }catch(err){applySetup({});toast('โหลดข้อมูล UC-Control ไม่สำเร็จ กรอกเองได้');}
   state.loadingSetup=false;
   if(state.step===0)render();
 }
@@ -467,7 +467,7 @@ function paintDock(){
 function setupCard(kind){
   const re=kind==='re',s=state.setup,edit=re?state.editRe:state.editStrip;
   const lot=re?s.lot:s.slot,exp=re?s.exp:s.sexp;
-  const title=re?'น้ำยา Control (L และ H)':'สตริป UC-10S';
+  const title=re?'UC-Control (L และ H)':'Strip UC-10S';
   const ids=re?['f-lot','f-exp']:['f-slot','f-sexp'];
   if(!edit){
     const e=expInfo(exp);
@@ -494,8 +494,8 @@ function viewInfo(){
     CFG.branches.map(b=>'<button type="button" class="br'+(state.branch===b?' on':'')+'" data-act="branch" data-b="'+b+'">'+b+'</button>').join('')+'</div>';
   let reagents;
   if(!hasB)reagents='<p class="hint" style="margin:12px 2px 0">เลือกสาขาก่อน ระบบจะดึง Lot/Exp ของสาขานั้นมาให้อัตโนมัติ</p>';
-  else if(state.loadingSetup)reagents='<p class="hint" style="margin:12px 2px 0">กำลังโหลดข้อมูลน้ำยาของสาขา'+esc(state.branch)+'...</p>';
-  else reagents='<div class="plabel" style="margin-top:14px">'+ic('flask')+'น้ำยาและสตริปของสาขา'+esc(state.branch)+'</div>'+setupCard('re')+setupCard('strip')+
+  else if(state.loadingSetup)reagents='<p class="hint" style="margin:12px 2px 0">กำลังโหลดข้อมูล UC-Control ของสาขา'+esc(state.branch)+'...</p>';
+  else reagents='<div class="plabel" style="margin-top:14px">'+ic('flask')+'UC-Control และ Strip ของสาขา'+esc(state.branch)+'</div>'+setupCard('re')+setupCard('strip')+
     '<p class="hint">ใช้ร่วมกันทุกเครื่องในสาขานี้ จนกว่าจะกดเปลี่ยน</p>';
   return '<section class="page pull"><div class="panel">'+picker+
     '<div class="g2" style="margin-top:14px">'+
@@ -583,7 +583,7 @@ function viewSummary(){
     '<div class="meta"><span>'+ic('pin')+'สาขา'+esc(state.branch)+'</span><span>'+ic('cal')+thDate(i.date)+'</span><span>'+ic('clock')+thTime(i.time)+'</span><span>'+ic('user')+(esc(i.name)||'ยังไม่ระบุ')+'</span><span>'+ic('drop')+'Lot '+esc(state.setup.lot)+' · Exp '+thDate(state.setup.exp)+'</span><span>'+ic('strip')+'UC-10S '+esc(state.setup.slot)+' · Exp '+thDate(state.setup.sexp)+'</span></div>'+
     '<div class="res">'+rc('L')+rc('H')+'</div>'+
     '<div class="card tbl"><div class="th"><span>รายการ</span><span>L</span><span>H</span></div>'+rows+'</div>'+
-    '<div class="card"><label class="fl" for="f-remark">'+ic('doc')+'หมายเหตุ / การแก้ไข</label><textarea class="field" id="f-remark" placeholder="เช่น วัดซ้ำแล้วผ่าน / เปลี่ยนน้ำยา">'+esc(state.remark)+'</textarea></div></section>';
+    '<div class="card"><label class="fl" for="f-remark">'+ic('doc')+'หมายเหตุ / การแก้ไข</label><textarea class="field" id="f-remark" placeholder="เช่น วัดซ้ำแล้วผ่าน / เปลี่ยน UC-Control">'+esc(state.remark)+'</textarea></div></section>';
 }
 
 /* ---------- วาดหน้า / เปลี่ยนหน้า ---------- */
@@ -705,10 +705,10 @@ $('next').onclick=()=>{
 function checkInfo(){
   const s=state.setup;
   if(!state.branch)return{m:'เลือกสาขาก่อน'};
-  if(state.loadingSetup)return{m:'รอสักครู่ กำลังโหลดข้อมูลน้ำยา'};
+  if(state.loadingSetup)return{m:'รอสักครู่ กำลังโหลดข้อมูล UC-Control'};
   if(!state.info.name.trim())return{m:'กรอกชื่อผู้บันทึกก่อน'};
-  if(!s.lot.trim()||!s.exp)return{m:'กรอก Lot และ Exp ของน้ำยา Control ก่อน',edit:'editRe'};
-  if(!s.slot.trim()||!s.sexp)return{m:'กรอก Lot และ Exp ของสตริป UC-10S ก่อน',edit:'editStrip'};
+  if(!s.lot.trim()||!s.exp)return{m:'กรอก Lot และ Exp ของ UC-Control ก่อน',edit:'editRe'};
+  if(!s.slot.trim()||!s.sexp)return{m:'กรอก Lot และ Exp ของ Strip UC-10S ก่อน',edit:'editStrip'};
   return null;
 }
 /* ---------- บันทึก ---------- */
@@ -800,10 +800,10 @@ function showSettings(){
     sec('crit','เกณฑ์ผ่าน','ช่วงปกติของแต่ละรายการ (Control-L / H)',crit)+
     sec('br','สาขา','เพิ่ม ลบ หรือเปลี่ยนชื่อสาขา',listRows(c.branches,'b').replace(/placeholder="ชื่อ"/g,'placeholder="ชื่อสาขา"')+'<button type="button" class="addbtn" data-sact="add-b">'+ic('plus')+'เพิ่มสาขา</button><div class="infonote">'+ic('info')+'<span>เปลี่ยนชื่อสาขาไม่ย้อนแก้ข้อมูลเก่าในชีต ข้อมูลเดิมยังใช้ชื่อเดิม</span></div>')+
     sec('nm','ผู้บันทึก','รายชื่อให้เลือกที่หน้ากรอก (กันสะกดชื่อไม่ตรงกัน)','<label class="tgl"><span>ให้เลือกชื่อจากรายชื่อ</span><input type="checkbox" id="cfg-mode"'+(c.nameMode?' checked':'')+'></label>'+listRows(c.names,'n')+'<button type="button" class="addbtn" data-sact="add-n">'+ic('plus')+'เพิ่มชื่อ</button>')+
-    sec('ex','เตือนน้ำยาใกล้หมดอายุ','เตือนเมื่อ Exp เหลือไม่เกินกี่วัน','<div class="stepper"><button type="button" class="iconbtn" data-sact="days-m" aria-label="ลด">−</button><input class="sin" id="cfg-days" type="number" inputmode="numeric" min="1" max="365" value="'+c.expDays+'"><span>วัน</span><button type="button" class="iconbtn" data-sact="days-p" aria-label="เพิ่ม">+</button></div>')+
+    sec('ex','เตือน UC-Control ใกล้หมดอายุ','เตือนเมื่อ Exp เหลือไม่เกินกี่วัน','<div class="stepper"><button type="button" class="iconbtn" data-sact="days-m" aria-label="ลด">−</button><input class="sin" id="cfg-days" type="number" inputmode="numeric" min="1" max="365" value="'+c.expDays+'"><span>วัน</span><button type="button" class="iconbtn" data-sact="days-p" aria-label="เพิ่ม">+</button></div>')+
     sec('rp','ข้อความในรายงาน','หัวรายงานและช่องลงนาม','<label class="lab">ชื่อหน่วยงาน<input class="sin" id="cfg-org" value="'+esc(c.report.org)+'"></label>'+sg)+
     sec('pw','เปลี่ยนรหัสผ่าน','ใช้ร่วมกับแดชบอร์ดและการตั้งค่า','<label class="lab">รหัสเดิม<input class="sin" id="pw-old" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">รหัสใหม่<input class="sin" id="pw-new" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">ยืนยันรหัสใหม่<input class="sin" id="pw-new2" type="password" autocomplete="off"></label><button type="button" class="addbtn" data-sact="pass" style="border-style:solid">เปลี่ยนรหัสผ่าน</button>')+
-    '<div class="infonote">'+ic('info')+'<span>Lot/Exp ของน้ำยาและสตริป เปลี่ยนได้ที่หน้าแรกโดยไม่ต้องใส่รหัส</span></div></div>'+
+    '<div class="infonote">'+ic('info')+'<span>Lot/Exp ของ UC-Control และ Strip เปลี่ยนได้ที่หน้าแรกโดยไม่ต้องใส่รหัส</span></div></div>'+
     '<div class="sh-dock"><div class="in"><button type="button" class="btn pri" data-sact="save">'+ic('save')+'<span>บันทึกการตั้งค่า</span></button></div></div>';
   $('settings').hidden=false;
 }
