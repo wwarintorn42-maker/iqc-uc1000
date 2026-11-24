@@ -375,15 +375,15 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 label.fl .ic,.plabel .ic{width:26px;height:26px;padding:5px;border-radius:50%;background:var(--Lt);color:var(--pri);flex:none;stroke-width:2.2}
 .tile small .ic,.fcard small .ic{width:22px;height:22px;padding:4px;border-radius:50%;background:var(--Lt);color:var(--pri);stroke-width:2.2}
 @media (min-width:700px) and (min-height:521px){
-  :root{--fw:min(clamp(560px,64vw,1180px),calc(100vw - 40px))}
-  html{background:#DCEBEB}
-  body{width:var(--fw);max-width:none;margin:20px auto;border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 70px -34px rgba(13,79,86,.5)}
+  :root{--fw:min(calc(100vw - 24px),1500px)}
+  html{background:#DCEBEB;overflow-y:auto}   /* ต้องตั้ง ไม่งั้น overflow:hidden ของ body ลามไปปิดการเลื่อนทั้งหน้า */
+  body{width:var(--fw);max-width:none;margin:12px auto;border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 70px -34px rgba(13,79,86,.5)}
   .wrap{max-width:none}
   .sh-dock .in{max-width:none}
   .dock{left:50%;right:auto;width:var(--fw);transform:translateX(-50%)}
 }
 /* จอกว้าง: รายการ QC แบ่ง 2 คอลัมน์ */
-@media (min-width:1180px) and (min-height:521px){
+@media (min-width:900px) and (min-height:521px){
   .page:has(.card.item){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;align-items:start}
   .page:has(.card.item)>:not(.card){grid-column:1/-1}
 }
