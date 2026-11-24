@@ -9,30 +9,30 @@
 <style>
 :root{
   color-scheme:light;
-  --bg:#F3F7F8; --card:#FFFFFF; --soft:#F6FAFB; --ink:#243746; --mute:#647A88; --line:#DCE8EB;
-  --pri:#167D8D; --sec:#38A6AD; --deep:#15566B; --on-pri:#FFFFFF;
-  --Lt:#D9F0F1; --Lc:#15566B; --Ht:#FCE5ED; --Hc:#A93566;
-  --ok:#27865B; --okbg:#E4F3EB; --okline:#9BD2B4;
-  --warn:#B97A12; --warnbg:#FDF3E1; --warnline:#E5A23C;
-  --bad:#D65B65; --badbg:#FBEAEB; --badline:#EDA9AF;
+  --bg:#EAF4F4; --card:#FFFFFF; --soft:#F3F9F9; --ink:#1E3A3F; --mute:#587378; --line:#D2E4E5;
+  --pri:#126B73; --sec:#178C91; --deep:#0D4F56; --on-pri:#FFFFFF;
+  --Lt:#D3ECEC; --Lc:#0D4F56; --Ht:#E8E7F5; --Hc:#58539A;
+  --ok:#23845D; --okbg:#DFF1E8; --okline:#98CDB3;
+  --warn:#B07414; --warnbg:#F8EEDA; --warnline:#E0A13A;
+  --bad:#D65362; --badbg:#FAE3E6; --badline:#EBA6AE;
   --shadow:0 14px 30px -20px rgba(21,86,107,.5);
   --font:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;--fh:'Prompt','IBM Plex Sans Thai',system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0F1D24; --card:#172831; --soft:#112229; --ink:#E6EFF2; --mute:#93A9B4; --line:#27404B;
-  --pri:#2FA3AE; --sec:#5CC3C8; --deep:#A9E1E4; --on-pri:#08262C;
-  --Lt:#1A3A42; --Lc:#A9E1E4; --Ht:#3A1F2B; --Hc:#F2A0BD;
-  --ok:#4CC38A; --okbg:#14342A; --okline:#2C6A50;
-  --warn:#F0B556; --warnbg:#382D14; --warnline:#8A6A22;
-  --bad:#EE7F88; --badbg:#3C1F23; --badline:#7C3A41;
+  --bg:#0C1D20; --card:#132A2E; --soft:#102428; --ink:#E1EFEF; --mute:#8FADB0; --line:#244349;
+  --pri:#2FB0B5; --sec:#5CC6CC; --deep:#8FE0E4; --on-pri:#062A2E;
+  --Lt:#1B4A50; --Lc:#8FE0E4; --Ht:#2E2C52; --Hc:#B9B5F0;
+  --ok:#5CC495; --okbg:#173A2D; --okline:#2C6A50;
+  --warn:#EDB55E; --warnbg:#3A3017; --warnline:#8A6A22;
+  --bad:#EE7A88; --badbg:#442029; --badline:#7C3A41;
   --shadow:0 14px 30px -20px rgba(0,0,0,.7); color-scheme:dark;}}
 :root[data-theme="dark"]{
-  --bg:#0F1D24; --card:#172831; --soft:#112229; --ink:#E6EFF2; --mute:#93A9B4; --line:#27404B;
-  --pri:#2FA3AE; --sec:#5CC3C8; --deep:#A9E1E4; --on-pri:#08262C;
-  --Lt:#1A3A42; --Lc:#A9E1E4; --Ht:#3A1F2B; --Hc:#F2A0BD;
-  --ok:#4CC38A; --okbg:#14342A; --okline:#2C6A50;
-  --warn:#F0B556; --warnbg:#382D14; --warnline:#8A6A22;
-  --bad:#EE7F88; --badbg:#3C1F23; --badline:#7C3A41;
+  --bg:#0C1D20; --card:#132A2E; --soft:#102428; --ink:#E1EFEF; --mute:#8FADB0; --line:#244349;
+  --pri:#2FB0B5; --sec:#5CC6CC; --deep:#8FE0E4; --on-pri:#062A2E;
+  --Lt:#1B4A50; --Lc:#8FE0E4; --Ht:#2E2C52; --Hc:#B9B5F0;
+  --ok:#5CC495; --okbg:#173A2D; --okline:#2C6A50;
+  --warn:#EDB55E; --warnbg:#3A3017; --warnline:#8A6A22;
+  --bad:#EE7A88; --badbg:#442029; --badline:#7C3A41;
   --shadow:0 14px 30px -20px rgba(0,0,0,.7); color-scheme:dark;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
@@ -44,7 +44,7 @@ button,input,textarea{font:inherit;color:inherit}
 .wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 /* ===== หัวหน้า: หน้าแรกเป็นแบนเนอร์ ส่วนหน้าอื่นเป็นแถบเล็ก ===== */
-.hero{background:linear-gradient(140deg,#15566B 0%,#167D8D 62%,#38A6AD 100%);color:#fff;position:relative;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
+.hero{background:linear-gradient(140deg,#0D4F56 0%,#126B73 62%,#178C91 100%);color:#fff;position:relative;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
 .hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
 .hero:before{width:240px;height:240px;right:-70px;top:-90px}
 .hero:after{width:150px;height:150px;left:-50px;bottom:-60px}
@@ -59,7 +59,7 @@ button,input,textarea{font:inherit;color:inherit}
 .bar{position:sticky;top:0;z-index:8;background:var(--card);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .bar .wrap{padding-block:10px 4px}
 .brow{display:flex;align-items:center;gap:10px}
-.bar .mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#15566B,#38A6AD)}
+.bar .mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#0D4F56,#178C91)}
 .bar .mark .ic{width:20px;height:20px}
 .bt{min-width:0;flex:1}
 .bt b{display:block;font-size:16px;line-height:1.2}
@@ -74,7 +74,7 @@ button,input,textarea{font:inherit;color:inherit}
 .seg.ok i{background:var(--ok)} .seg.bad i{background:var(--bad)}
 .seg:focus-visible{outline:2px solid var(--pri);outline-offset:1px;border-radius:6px}
 
-main{padding-block:18px 150px}
+main{padding-block:18px 190px}
 .pull{margin-top:-46px;position:relative;z-index:2}
 .page{animation:rise .24s ease-out}
 @keyframes rise{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -167,7 +167,7 @@ select.bare{appearance:none;-webkit-appearance:none;background:none;cursor:point
 .branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .br{min-height:50px;border:1.5px solid var(--line);background:var(--soft);border-radius:15px;font-size:16px;font-weight:700;cursor:pointer;color:var(--fg);padding:0 4px;transition:transform .1s,background .15s}
 .br:active{transform:scale(.96)}
-.br.on{background:linear-gradient(135deg,#15566B,#167D8D 55%,#38A6AD) border-box;border-color:transparent;color:#fff;box-shadow:0 10px 18px -12px var(--pri)}
+.br.on{background:linear-gradient(135deg,#0D4F56,#126B73 55%,#178C91) border-box;border-color:transparent;color:#fff;box-shadow:0 10px 18px -12px var(--pri)}
 .lotcard .exp{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
 .lotcard .exp em{font-style:normal;font-weight:700}
 .lotcard.warn{background:linear-gradient(135deg,var(--warnbg),var(--soft));border-color:var(--warnline)}
@@ -195,7 +195,7 @@ select.bare{appearance:none;-webkit-appearance:none;background:none;cursor:point
 .band p{margin:2px 0 0;font-size:13.5px;opacity:.9}
 .item{position:relative;overflow:hidden;scroll-margin-top:170px;scroll-margin-bottom:130px}
 .item:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc)}
-.item.L{--acc:var(--sec)} .item.H{--acc:#D86C93}
+.item.L{--acc:var(--sec)} .item.H{--acc:#8E89D0}
 .card{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:16px 16px 16px 20px;margin-top:12px;box-shadow:var(--shadow);transition:border-color .2s,background .2s}
 .card.ok{border-color:var(--okline);background:linear-gradient(var(--okbg),var(--okbg)),var(--card)}
 .card.bad{border-color:var(--badline);background:linear-gradient(var(--badbg),var(--badbg)),var(--card)}
@@ -229,8 +229,8 @@ textarea.field{height:auto;padding:12px 14px;resize:vertical;min-height:90px;lin
 
 /* ===== สรุปผล ===== */
 .verdict{display:flex;align-items:center;gap:14px;border-radius:22px;padding:18px;color:#fff}
-.verdict.ok{background:linear-gradient(135deg,#1C6E4C,#34A476)}
-.verdict.bad{background:linear-gradient(135deg,#B13E49,#E0707A)}
+.verdict.ok{background:linear-gradient(135deg,#1A6B4A,#23845D 55%,#3A9E78)}
+.verdict.bad{background:linear-gradient(135deg,#B8404F,#D65362 60%,#E27C88)}
 .verdict.miss{background:linear-gradient(135deg,#A8700F,#E5A23C)}
 .verdict .vi{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;flex:none}
 .verdict .vi .ic{width:28px;height:28px}
@@ -267,7 +267,7 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:18px;border:1.5px solid var(--line);background:var(--card);font-size:17px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .15s;box-shadow:var(--shadow)}
 .btn:active{transform:scale(.98)}
 .btn:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
-.btn.pri{border:0;background:linear-gradient(135deg,#15566B,#167D8D 55%,#38A6AD);color:#fff;box-shadow:0 14px 24px -14px var(--pri)}
+.btn.pri{border:0;background:linear-gradient(135deg,#0D4F56,#126B73 55%,#178C91);color:#fff;box-shadow:0 14px 24px -14px var(--pri)}
 .btn:disabled{opacity:.55}
 
 /* ===== แจ้งเตือน / เสร็จสิ้น ===== */
@@ -290,17 +290,96 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 .dbox .btn{width:100%;margin-top:16px}
 @media (min-width:600px){.chip{min-height:62px}}
 @media (max-width:350px){.tr,.th{grid-template-columns:minmax(0,1fr) 74px 74px}.res{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+
+/* ===== v4: ดีไซน์ให้เข้าชุดกับแดชบอร์ด ===== */
+.hero{background:linear-gradient(140deg,#1B9499 0%,#148087 45%,#126B73 100%);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:linear-gradient(140deg,#0F5A62,#0A3B41)}}
+:root[data-theme="dark"] .hero{background:linear-gradient(140deg,#0F5A62,#0A3B41)}
+.hero:before,.hero:after{display:block;background:rgba(255,255,255,.09)}
+.hero:before{width:260px;height:260px;right:-80px;top:-110px}
+.hero:after{width:170px;height:170px;left:-60px;bottom:-70px;background:rgba(255,255,255,.07)}
+.hbrand small{opacity:.9}
+.eyebrow{opacity:.95}
+.hsub{opacity:.95}
+.hero .wrap{padding-block:6px 56px}
+.hrow{justify-content:flex-end;margin-bottom:6px}
+.hbrand{display:flex;align-items:center;gap:10px;min-width:0}
+.hbrand b{display:block;font-family:var(--fh);font-size:16px;font-weight:600;line-height:1.2}
+.hbrand small{display:block;font-size:12px;opacity:.72;line-height:1.3}
+.hero .mark{background:rgba(255,255,255,.14)}
+.hero h1{font-size:clamp(21px,6vw,26px)}
+.panel,.card,.sec{border-radius:16px;box-shadow:0 10px 26px -18px rgba(18,107,115,.45)}
+.card{box-shadow:0 6px 18px -16px rgba(18,107,115,.4)}
+.panel{padding:16px}
+.tile,.fcard{border-radius:12px}
+.br{border-radius:11px}
+.br.on{background:linear-gradient(135deg,#178C91,#126B73) border-box;border-color:transparent;color:#fff;box-shadow:0 8px 16px -10px rgba(18,107,115,.7)}
+.btn{border-radius:13px}
+.btn.pri{background:linear-gradient(135deg,#178C91,#126B73);box-shadow:0 12px 22px -14px rgba(18,107,115,.8)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.pri,:root:not([data-theme="light"]) .br.on{color:var(--on-pri)}}
+.band{border-radius:14px}
+.verdict{border-radius:14px}
+.rc,.dline,.note{border-radius:12px}
+/* รถไฟความคืบหน้า มีชื่อรายการ */
+.rail{gap:3px}
+.seg{display:flex;flex-direction:column;align-items:stretch;gap:3px;padding:6px 0 4px}
+.seg em{font-style:normal;font-size:9.5px;line-height:1;text-align:center;color:var(--mute);font-weight:600;letter-spacing:-.01em}
+.seg i{height:5px}
+.seg.ok em{color:var(--ok)}.seg.bad em{color:var(--bad)}
+/* ช่องเลือกใหญ่ขึ้น */
+.chip{min-height:62px;border-radius:12px}
+.chip.on{box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+@media (min-width:600px){.chip{min-height:66px}}
+/* Lot / Exp แบบการ์ดคู่ */
+.rg2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.rg2 .editbox{grid-column:1/-1;margin:0}
+.rg2 .lotcard{margin:0;flex-direction:column;align-items:stretch;gap:8px;padding:12px;border-radius:12px;background:var(--soft);border:1.5px solid var(--line);position:relative}
+.rg2 .lotcard .li{width:34px;height:34px;border-radius:10px;background:var(--Lt)}
+.rg2 .lotcard{background:linear-gradient(160deg,var(--card),var(--soft))}
+.rg2 .lotcard b{font-size:19px}
+.rg2 .lotcard .exp{font-size:12px}
+.rg2 .lotcard .exp em{display:inline-block;margin-top:3px;padding:1px 8px;border-radius:99px;background:var(--okbg);color:var(--ok);font-style:normal}
+.rg2 .lotcard.warn{background:var(--warnbg);border-color:var(--warnline)}
+.rg2 .lotcard.warn .exp em{background:var(--card);color:var(--warn)}
+.rg2 .lotcard.bad{background:var(--badbg);border-color:var(--badline)}
+.rg2 .lotcard.bad .exp em{background:var(--card);color:var(--bad)}
+.rg2 .lotcard .mini{align-self:stretch;text-align:center}
+.lotcard .li{color:var(--pri)}
+/* แถบสรุปเหนือปุ่มล่าง */
+.dsum{max-width:528px;margin:0 auto 8px;display:flex;align-items:center;gap:8px;font-size:13.5px;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px 12px;min-width:0}
+.dsum i{width:9px;height:9px;border-radius:50%;background:var(--warnline);flex:none}
+.dsum.ok i{background:var(--ok)}.dsum.bad i{background:var(--bad)}
+.dsum span{min-width:0}
+.dsum .dr{margin-left:auto;text-align:right;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dsum.bad .dr{color:var(--bad);font-weight:600}.dsum.ok .dr{color:var(--ok)}
+
+/* ---------- ฟอร์มบันทึกการแก้ไข ---------- */
+.fxb{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--warnbg);border:1px solid var(--warnline);font-size:13.5px;line-height:1.5;color:var(--ink)}
+.fxb b{font-family:var(--fh)}
+.fxfail{margin:12px 0 0;padding:12px 14px;border-radius:14px;background:var(--badbg);border:1px solid var(--badline);color:var(--bad);font-weight:600;font-size:14.5px;line-height:1.5}
+.fxg{margin:14px 2px 6px;font-size:12.5px;font-weight:700;color:var(--mute);letter-spacing:.02em}
+.fxo{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;margin-top:6px;border:1.5px solid var(--line);border-radius:12px;background:var(--soft);font-size:15px;cursor:pointer;line-height:1.35}
+.fxo input{width:22px;height:22px;flex:none;accent-color:var(--pri)}
+.fxo.on{background:var(--Lt);border-color:var(--pri);font-weight:600}
+.fxt{margin:6px 0 0;height:46px;font-size:15px}
+.fxn{width:100%;min-height:84px;margin-top:4px;border:1.5px solid var(--line);border-radius:12px;background:var(--soft);padding:10px 12px;font-size:15px;color:var(--ink);font-family:inherit;resize:vertical}
+.fxn:focus{outline:none;border-color:var(--pri)}
+.fxres{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.fxres .chip{min-height:50px;font-size:16px}
+.dbox .btn.alt{background:var(--soft);box-shadow:none;margin-top:10px}
+.dbox .fxline{margin-top:8px;font-size:13.5px;color:var(--mute)}
 </style>
 
 <header id="top"></header>
 <main class="wrap"><div id="view"></div><p class="foot">พัฒนาและดูแลระบบโดย ทนพ.วรินทร แสงหิรัญรัตนา</p></main>
-<nav class="dock"><div class="in" id="dockin">
+<nav class="dock"><div class="dsum" id="dsum" hidden></div><div class="in" id="dockin">
   <button type="button" class="btn back" id="back" aria-label="ย้อนกลับ"></button>
   <button type="button" class="btn pri" id="next"></button>
 </div></nav>
 <div class="sheet" id="settings" hidden></div>
 <div class="gate" id="gate" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sheet" id="fixv" hidden></div>
 <div class="done" id="done" hidden></div>
 
 <script>
@@ -450,17 +529,25 @@ function paintTop(){
     '<div class="bt"><b>'+(l?'Control-'+l:'สรุปและบันทึก')+'</b><span>IQC · '+(state.branch?'สาขา'+state.branch:'Sysmex UC-1000')+'</span></div>'+
     '<div class="cnts">'+cp('L')+cp('H')+'</div></div>'+
     (l?'<div class="rail" id="rail">'+P.map((p,i)=>{const j=judge(p,l);
-      return '<button type="button" class="seg '+(j===null?'':j?'ok':'bad')+'" data-scroll="'+i+'" aria-label="'+p.ab+'"><i></i></button>';}).join('')+'</div>':'<div style="height:8px"></div>')+'</div>';
+      return '<button type="button" class="seg '+(j===null?'':j?'ok':'bad')+'" data-scroll="'+i+'" aria-label="'+p.ab+'"><i></i><em>'+p.ab+'</em></button>';}).join('')+'</div>':'<div style="height:8px"></div>')+'</div>';
 }
 /* ---------- แถบล่าง ---------- */
 function paintDock(){
-  const b=$('back'),n=$('next');
-  b.hidden=state.step===0;
-  $('dockin').classList.toggle('solo',state.step===0);
+  const b=$('back'),n=$('next'),ds=$('dsum'),st=stat(),l0=lvOf();
+  if(state.step===0)ds.hidden=true;
+  else{
+    ds.hidden=false;
+    const fl=l0?st.fails[l0]:[].concat(st.fails.L.map(x=>'L '+x),st.fails.H.map(x=>'H '+x));
+    const cnt=l0?st.cnt[l0]:st.filled,tot=l0?N:TOTAL;
+    ds.className='dsum '+(fl.length?'bad':cnt===tot?'ok':'');
+    ds.innerHTML='<i></i><span><b>กรอกแล้ว '+cnt+'/'+tot+'</b>'+(cnt<tot?' · เหลือ '+(tot-cnt):'')+'</span><span class="dr">'+(fl.length?'ไม่ผ่าน '+esc(fl.join(', ')):(cnt?'ผ่านทุกรายการที่กรอก':''))+'</span>';
+  }
+  b.hidden=state.step===0||(state.rerun&&state.step===rrSteps()[0]);
+  $('dockin').classList.toggle('solo',b.hidden);
   b.innerHTML=ic('left');
   n.disabled=state.saving||!ready;
   if(state.step===0)n.innerHTML='<span>เริ่มกรอก Control-L</span>'+ic('right');
-  else if(state.step===1)n.innerHTML='<span>ไปกรอก Control-H</span>'+ic('right');
+  else if(state.step===1)n.innerHTML='<span>'+(rrSteps().includes(2)?'ไปกรอก Control-H':'สรุปผล')+'</span>'+ic('right');
   else if(state.step===2)n.innerHTML='<span>สรุปผล</span>'+ic('right');
   else n.innerHTML=ic('save')+'<span>'+(state.saving?'กำลังบันทึก...':'บันทึกผล')+'</span>';
 }
@@ -474,7 +561,7 @@ function setupCard(kind){
   if(!edit){
     const e=expInfo(exp);
     return '<div class="lotcard '+(e?e.c:'')+'"><div class="li">'+ic(re?'drop':'strip')+'</div><div class="lt"><small>'+title+'</small><b>'+esc(lot)+'</b>'+
-      '<span class="exp">Exp '+thDate(exp)+(e?' · <em>'+e.t+'</em>':'')+'</span></div><button type="button" class="mini" data-act="'+(re?'edit-re':'edit-strip')+'">เปลี่ยน</button></div>';
+      '<span class="exp">Exp '+thDate(exp)+(e?' <em>'+e.t+'</em>':'')+'</span></div><button type="button" class="mini" data-act="'+(re?'edit-re':'edit-strip')+'">เปลี่ยน</button></div>';
   }
   return '<div class="editbox"><div class="et">'+ic(re?'drop':'strip')+title+'</div><div class="g2">'+
     '<label class="fcard"><small>Lot</small><input class="bare" id="'+ids[0]+'" placeholder="เช่น 123456" value="'+esc(lot)+'"></label>'+
@@ -497,15 +584,14 @@ function viewInfo(){
   let reagents;
   if(!hasB)reagents='<p class="hint" style="margin:12px 2px 0">เลือกสาขาก่อน ระบบจะดึง Lot/Exp ของสาขานั้นมาให้อัตโนมัติ</p>';
   else if(state.loadingSetup)reagents='<p class="hint" style="margin:12px 2px 0">กำลังโหลดข้อมูล UC-Control ของสาขา'+esc(state.branch)+'...</p>';
-  else reagents='<div class="plabel" style="margin-top:14px">'+ic('flask')+'UC-Control และ Strip ของสาขา'+esc(state.branch)+'</div>'+setupCard('re')+setupCard('strip')+
+  else reagents='<div class="plabel" style="margin-top:16px">'+ic('flask')+'UC-Control และ Strip ของสาขา'+esc(state.branch)+'</div><div class="rg2">'+setupCard('re')+setupCard('strip')+'</div>'+
     '<p class="hint">ใช้ร่วมกันทุกเครื่องในสาขานี้ จนกว่าจะกดเปลี่ยน</p>';
-  return '<section class="page pull"><div class="panel">'+picker+
-    '<div class="g2" style="margin-top:14px">'+
+  return '<section class="page pull"><div class="panel">'+picker+reagents+
+    '<div class="plabel" style="margin-top:16px">'+ic('cal')+'วันที่และผู้บันทึก</div><div class="g2">'+
     '<label class="tile"><small>'+ic('cal')+'วันที่</small><b id="v-date">'+thDate(i.date)+'</b><input id="f-date" type="date" value="'+i.date+'" aria-label="วันที่"></label>'+
     '<label class="tile"><small>'+ic('clock')+'เวลา</small><b id="v-time">'+thTime(i.time)+'</b><input id="f-time" type="time" value="'+i.time+'" aria-label="เวลา"></label>'+
     '</div>'+
-    nameField()+
-    reagents+'</div>'+
+    nameField()+'</div>'+
     ''+(critWarn.length?'<div class="note warn">'+ic('alert')+'<span style="white-space:pre-line">'+esc(critWarn.join('\n'))+'</span></div>':'')+(!ready?'<div class="note" style="background:var(--soft);color:var(--mute)">'+ic('info')+'<span>กำลังโหลดเกณฑ์ผ่านจากชีต...</span></div>':'')+'</section>';
 }
 
@@ -543,10 +629,10 @@ function itemHTML(p,l,i){
     '<p class="crit">'+ic('target')+'<span>เกณฑ์ผ่าน <b>'+rangeText(p,l)+'</b></span></p>'+inp+'</div>';
 }
 function viewLevel(l){
-  const next=l==='L'?'Control-H':'สรุปผล';
-  return '<section class="page"><div class="band '+l+'"><div class="bl">'+l+'</div><div><h2>Control-'+l+'</h2><p>'+(l==='L'?'ระดับต่ำ (Low)':'ระดับสูง (High)')+' · กรอกให้ครบ '+N+' รายการ แล้วไปต่อที่ '+next+'</p></div></div>'+
+  const toH=l==='L'&&rrSteps().includes(2),next=toH?'Control-H':'สรุปผล';
+  return '<section class="page">'+fixBar()+'<div class="band '+l+'"><div class="bl">'+l+'</div><div><h2>Control-'+l+'</h2><p>'+(l==='L'?'ระดับต่ำ (Low)':'ระดับสูง (High)')+' · กรอกให้ครบ '+N+' รายการ แล้วไปต่อที่ '+next+'</p></div></div>'+
     P.map((p,i)=>itemHTML(p,l,i)).join('')+
-    '<div class="note" id="endn" hidden>'+ic('check')+'<span>กรอกครบ '+N+' รายการแล้ว กด “'+(l==='L'?'ไปกรอก Control-H':'สรุปผล')+'” ด้านล่างได้เลย</span></div></section>';
+    '<div class="note" id="endn" hidden>'+ic('check')+'<span>กรอกครบ '+N+' รายการแล้ว กด “'+(toH?'ไปกรอก Control-H':'สรุปผล')+'” ด้านล่างได้เลย</span></div></section>';
 }
 function patchCard(i,l){
   const j=judge(P[i],l),c=$('c-'+i);if(!c)return;
@@ -578,7 +664,7 @@ function viewSummary(){
   const miss=TOTAL-s.filled,nf=s.fails.L.length+s.fails.H.length;
   const vc=miss?'miss':nf?'bad':'ok';
   const vt=miss?'ยังกรอกไม่ครบ':nf?'มีรายการไม่ผ่าน':'ผ่านทุกรายการ';
-  const vs=miss?'เหลืออีก '+miss+' ช่อง แตะช่องในตารางเพื่อกลับไปกรอก':nf?'ควรบันทึกการแก้ไขหรือการวัดซ้ำในหมายเหตุ':'ตรวจแล้วกดบันทึกผลได้เลย';
+  const vs=miss?'เหลืออีก '+miss+' ช่อง แตะช่องในตารางเพื่อกลับไปกรอก':nf?''+(state.rerun?'หลังกดบันทึกจะให้ระบุสาเหตุและการแก้ไข':'หลังบันทึกต้องกรอก QC ซ้ำอีกรอบ')+'':'ตรวจแล้วกดบันทึกผลได้เลย';
   const rc=l=>{
     const done=s.cnt[l]===N,bad=s.fails[l].length;
     const cls=!done?'miss':bad?'bad':'ok';
@@ -591,7 +677,7 @@ function viewSummary(){
     '<div class="meta"><span>'+ic('pin')+'สาขา'+esc(state.branch)+'</span><span>'+ic('cal')+thDate(i.date)+'</span><span>'+ic('clock')+thTime(i.time)+'</span><span>'+ic('user')+(esc(i.name)||'ยังไม่ระบุ')+'</span><span>'+ic('drop')+'Lot '+esc(state.setup.lot)+' · Exp '+thDate(state.setup.exp)+'</span><span>'+ic('strip')+'UC-10S '+esc(state.setup.slot)+' · Exp '+thDate(state.setup.sexp)+'</span></div>'+
     '<div class="res">'+rc('L')+rc('H')+'</div>'+
     '<div class="card tbl"><div class="th"><span>รายการ</span><span>L</span><span>H</span></div>'+rows+'</div>'+
-    '<div class="card"><label class="fl" for="f-remark">'+ic('doc')+'หมายเหตุ / การแก้ไข</label><textarea class="field" id="f-remark" placeholder="เช่น วัดซ้ำแล้วผ่าน / เปลี่ยน UC-Control">'+esc(state.remark)+'</textarea></div></section>';
+    '</section>';
 }
 
 /* ---------- วาดหน้า / เปลี่ยนหน้า ---------- */
@@ -601,13 +687,24 @@ function render(){
   paintTop();paintDock();patchEnd();
   if(l)P.forEach((p,i)=>patchMark(i,l));
 }
+/* รอบกรอกซ้ำ: ไปเฉพาะ Control ที่ไม่ผ่าน (ระดับที่ผ่านแล้วใช้ค่ารอบแรก) */
+const rrSteps=()=>state.rerun?state.rerun.lv.map(l=>l==='L'?1:2).concat(3):[0,1,2,3];
 function go(n,noTop){
-  state.step=Math.max(0,Math.min(3,n));
+  n=Math.max(0,Math.min(3,n));
+  if(state.rerun){
+    const ok=rrSteps();
+    if(!ok.includes(n)){
+      if(n<ok[0])n=ok[0];
+      else n=n>state.step?(ok.find(s=>s>n)||3):(ok.slice().reverse().find(s=>s<n)||ok[0]);
+    }
+  }
+  state.step=n;
   state.showMiss=false;
   render();
   if(!noTop)window.scrollTo({top:0,behavior:'smooth'});
 }
 function goItem(l,i,markMiss){
+  if(state.rerun&&!state.rerun.lv.includes(l)){toast('รอบนี้กรอกซ้ำเฉพาะ Control-'+state.rerun.lv.join(' และ '));return;}
   go(l==='L'?1:2,true);
   if(markMiss){
     state.showMiss=true;
@@ -657,7 +754,7 @@ $('view').addEventListener('click',e=>{
     const was=judge(p,l)!==null;
     state.vals[l][p.k]=c.dataset.v;
     card.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));
-    patchCard(i,l);paintTop();patchEnd();
+    patchCard(i,l);paintTop();paintDock();patchEnd();
     if(!was)setTimeout(()=>{if(lvOf()===l)scrollNext(i,l);},380);
   }
 });
@@ -680,7 +777,7 @@ $('view').addEventListener('input',e=>{
   else if(t.id==='f-remark')state.remark=t.value;
   else if(t.id.slice(0,2)==='n-'&&lvOf()){
     const i=+t.id.slice(2),l=lvOf();
-    state.vals[l][P[i].k]=t.value;patchCard(i,l);paintTop();patchEnd();
+    state.vals[l][P[i].k]=t.value;patchCard(i,l);paintTop();paintDock();patchEnd();
   }
 });
 $('view').addEventListener('keydown',e=>{
@@ -729,6 +826,7 @@ async function save(){
   const data={branch:state.branch,date:i.date,time:i.time,name:i.name.trim(),lot:su.lot.trim(),exp:su.exp,slot:su.slot.trim(),sexp:su.sexp,remark:state.remark.trim(),
     L:{values:state.vals.L,fails:s.fails.L,pass:s.fails.L.length===0},
     H:{values:state.vals.H,fails:s.fails.H,pass:s.fails.H.length===0}};
+  if(state.rerun){data.fixRound=state.rerun.round;if(state.rerun.lv.length===1)data.only=state.rerun.lv[0];}   // รอบกรอกซ้ำ (ถ้ากรอกซ้ำระดับเดียว เก็บแถวของระดับนั้น)
   try{localStorage.setItem('qcName',data.name);}catch(e){}
   state.saving=true;paintDock();
   try{
@@ -744,21 +842,140 @@ async function save(){
     toast('บันทึกไม่สำเร็จ: '+(err&&err.message?err.message:'ลองใหม่อีกครั้ง'));
   }finally{state.saving=false;paintDock();}
 }
+function resetForNew(){
+  const keep=state.info.name;
+  state.vals={L:{},H:{}};state.remark='';state.rerun=null;state.fxd=null;state.last=null;nowFill();state.info.name=keep;
+  state.editRe=!(state.setup.lot&&state.setup.exp);state.editStrip=!(state.setup.slot&&state.setup.sexp);
+}
+function doneBox(all,inner){
+  $('done').innerHTML='<div class="dbox" role="dialog" aria-modal="true"><div class="dbadge '+(all?'ok':'bad')+'">'+ic(all?'check':'x')+'</div>'+inner+'</div>';
+  $('done').hidden=false;
+}
 function showDone(d,res){
   const all=d.L.pass&&d.H.pass;
   const line=(l,x)=>'<div class="dline '+(x.pass?'ok':'bad')+'"><span>Control-'+l+'</span><span>'+(x.pass?'ผ่าน':'ไม่ผ่าน: '+esc(x.fails.join(', ')))+'</span></div>';
-  $('done').innerHTML='<div class="dbox" role="dialog" aria-modal="true"><div class="dbadge '+(all?'ok':'bad')+'">'+ic(all?'check':'x').replace('width','width')+'</div>'+
-    '<h2>'+(all?'QC ผ่านทั้งหมด':'QC ไม่ผ่าน')+'</h2>'+line('L',d.L)+line('H',d.H)+
-    '<p class="sub" style="margin-top:12px">สาขา'+esc(d.branch)+' · บันทึกลงชีต '+esc(res.tab)+' แล้ว (2 แถว)</p>'+
-    (res.demo?'<p class="demo">โหมดตัวอย่าง: หน้านี้ยังไม่ได้ต่อกับ Google Sheet จึงไม่ได้บันทึกข้อมูลจริง</p>':'')+
-    '<button type="button" class="btn pri" id="again">บันทึกรายการใหม่</button></div>';
-  $('done').hidden=false;
-  $('again').onclick=()=>{
+  const info='<p class="sub" style="margin-top:12px">สาขา'+esc(d.branch)+' · บันทึกลงชีต '+esc(res.tab)+' แล้ว ('+(d.only?'1 แถว':'2 แถว')+')</p>'+
+    (res.demo?'<p class="demo">โหมดตัวอย่าง: หน้านี้ยังไม่ได้ต่อกับ Google Sheet จึงไม่ได้บันทึกข้อมูลจริง</p>':'');
+  const head=(d.only?'':line('L',d.L)+line('H',d.H));
+  const headR=['L','H'].filter(l=>!state.rerun||state.rerun.lv.includes(l)).map(l=>line(l,d[l])).join('');
+  if(state.rerun){
+    /* รอบที่กรอกซ้ำ → ต้องระบุสาเหตุ/การแก้ไข/ผล แล้วส่ง (ทำซ้ำได้รอบเดียว) */
+    state.last=d;
+    doneBox(all,'<h2>'+(all?'กรอกซ้ำแล้วผ่าน':'กรอกซ้ำแล้วยังไม่ผ่าน')+'</h2>'+headR+info+
+      '<p class="fxline">ขั้นต่อไป: ระบุสาเหตุและการแก้ไข</p><button type="button" class="btn pri" id="fixgo">ระบุสาเหตุและการแก้ไข</button>');
+    $('fixgo').onclick=()=>{
+      state.fxCtx={round:1,failDate:state.rerun.failDate,failTime:state.rerun.failTime,failItems:state.rerun.failItems};
+      if(!state.fxd)state.fxd={causes:[],causeOther:'',acts:[],actOther:'',note:'',res:'',resOther:''};
+      showFix();
+    };
+    return;
+  }
+  if(all){
+    doneBox(true,'<h2>QC ผ่านทั้งหมด</h2>'+head+info+'<p class="fxline">บันทึกเรียบร้อย ถ้าจะบันทึกรายการใหม่ให้สแกนเข้าหน้านี้อีกครั้ง</p>');
+    return;
+  }
+  /* รอบแรกไม่ผ่าน → ต้องกรอกซ้ำก่อน ยังไม่ถามสาเหตุ */
+  doneBox(false,'<h2>QC ไม่ผ่าน</h2>'+head+info+
+    '<p class="fxline">ต้องกรอก QC ซ้ำเฉพาะ Control ที่ไม่ผ่าน ('+['L','H'].filter(l=>!d[l].pass).join(' และ ')+') ก่อน แล้วค่อยระบุสาเหตุ</p><button type="button" class="btn pri" id="rerun">กรอก QC ซ้ำ</button>');
+  $('rerun').onclick=()=>{
     const keep=state.info.name;
-    state.vals={L:{},H:{}};state.remark='';nowFill();state.info.name=keep;
-    state.editRe=!(state.setup.lot&&state.setup.exp);state.editStrip=!(state.setup.slot&&state.setup.sexp);
-    $('done').hidden=true;go(0);
+    const lv=['L','H'].filter(l=>!d[l].pass);
+    state.rerun={round:1,lv,failDate:d.date,failTime:d.time,failItems:{L:d.L.fails.slice(),H:d.H.fails.slice()}};
+    const prev=JSON.parse(JSON.stringify(state.vals));      // ระดับที่ผ่านแล้วใช้ค่ารอบแรก
+    state.vals={L:{},H:{}};['L','H'].forEach(l=>{if(!lv.includes(l))state.vals[l]=prev[l];});
+    state.remark='';nowFill();state.info.name=keep;
+    $('done').hidden=true;go(lv[0]==='L'?1:2);
   };
+}
+
+/* ---------- ฟอร์มบันทึกการแก้ไข (ร่วม L/H) ---------- */
+const FX_OTHER='Others (โปรดระบุ)';
+const FX_GROUPS=[
+  ['การป้อนข้อมูล / Error',['Input QC wrong level','Input QC wrong type','Input QC not enough on cup','Input calibrator wrong type','Error long time QC on cup','Error long time cal on cup']],
+  ['น้ำยา (Reagents)',['Reagents short volume','Reagents new bottle','Reagent fix long time','Reagents new lot','Reagents degenerated']],
+  ['Control',['Control low volume in the bottle','Control not enough on cup','Control degenerated ไม่ได้คุณภาพ','Control not set new lot','Control has a lot of Bubbles']],
+  ['Calibrate',['Calibrate degenerated ไม่ได้คุณภาพ','Calibrate fail','Calibrate not set new lot']],
+  ['เครื่อง / อื่นๆ',['Instruments','Water supply error','RT out of range','No explanation',FX_OTHER]]
+];
+const FX_ACTS=['Re Calibrate','Re Control','Contact a Technician',FX_OTHER];
+const fxIsOther=l=>l===FX_OTHER;
+function fxRow(kind,label,on){
+  return '<label class="fxo'+(on?' on':'')+'"><input type="checkbox" data-fx="'+kind+'" value="'+esc(label)+'"'+(on?' checked':'')+'><span>'+esc(label)+'</span></label>';
+}
+function fxOtherInput(kind,x){
+  const on=kind==='c'?x.causes.includes(FX_OTHER):x.acts.includes(FX_OTHER);
+  return '<input class="sin fxt" id="fx-'+kind+'o" placeholder="โปรดระบุ" value="'+esc(kind==='c'?x.causeOther:x.actOther)+'"'+(on?'':' hidden')+'>';
+}
+const fxAuto=()=>state.last&&state.last.L.pass&&state.last.H.pass?'Pass':'Not Pass';
+function fxResHTML(){
+  const x=state.fxd,cur=x.res||fxAuto();
+  const chip=v=>'<button type="button" class="chip'+(cur===v?' on':'')+'" data-fxres="'+v+'">'+v+'</button>';
+  return '<div class="fxres">'+chip('Pass')+chip('Not Pass')+chip('Others')+'</div>'+
+    (cur==='Others'?'<input class="sin fxt" id="fx-ro" placeholder="โปรดระบุผลการแก้ไข" value="'+esc(x.resOther)+'">':'');
+}
+function showFix(){
+  const x=state.fxd,c=state.fxCtx,d=state.last;
+  const ft=['L','H'].filter(l=>c.failItems[l].length).map(l=>'Control-'+l+': '+c.failItems[l].join(', ')).join('  ·  ');
+  const rt=['L','H'].filter(l=>!state.rerun||state.rerun.lv.includes(l)).map(l=>'Control-'+l+' '+(d[l].pass?'ผ่าน':'ไม่ผ่าน ('+d[l].fails.join(', ')+')')).join('  ·  ');
+  const causes=FX_GROUPS.map(g=>'<div class="fxg">'+g[0]+'</div>'+g[1].map(l=>fxRow('c',l,x.causes.includes(l))+(fxIsOther(l)?fxOtherInput('c',x):'')).join('')).join('');
+  const acts=FX_ACTS.map(l=>fxRow('a',l,x.acts.includes(l))+(fxIsOther(l)?fxOtherInput('a',x):'')).join('');
+  $('fixv').innerHTML=
+    '<div class="sh-top"><div class="wrap"><button type="button" class="iconbtn" data-fxact="close" aria-label="กลับ">'+ic('left')+'</button><h2>สาเหตุและการแก้ไข</h2></div></div>'+
+    '<div class="wrap sh-body">'+
+    '<div class="fxfail">รอบแรกไม่ผ่าน · '+esc(ft||'-')+'</div>'+
+    '<div class="fxb" style="margin-top:8px"><b>รอบกรอกซ้ำ</b> · '+esc(rt)+'</div>'+
+    '<div class="card" style="margin-top:12px"><label class="fl">'+ic('alert')+'สาเหตุปัญหา (เลือกได้หลายข้อ)</label>'+causes+'</div>'+
+    '<div class="card" style="margin-top:12px"><label class="fl">'+ic('check')+'การแก้ไข (เลือกได้หลายข้อ)</label>'+acts+'</div>'+
+    '<div class="card" style="margin-top:12px"><label class="fl">'+ic('target')+'ผลการแก้ไข <small style="font-weight:400;color:var(--mute)">(ระบบเลือกตามผลกรอกซ้ำ เปลี่ยนได้)</small></label><div id="fx-res">'+fxResHTML()+'</div></div>'+
+    '<div class="card" style="margin-top:12px"><label class="fl" for="fx-note">'+ic('doc')+'คำอธิบาย (ถ้ามี)</label><textarea class="fxn" id="fx-note" placeholder="รายละเอียดเพิ่มเติม">'+esc(x.note)+'</textarea></div>'+
+    '</div>'+
+    '<div class="sh-dock"><div class="in"><button type="button" class="btn pri" data-fxact="go" id="fx-send"><span>ส่งข้อมูล</span>'+ic('check')+'</button></div></div>';
+  $('fixv').hidden=false;$('fixv').scrollTop=0;
+}
+$('fixv').addEventListener('change',e=>{
+  const t=e.target,x=state.fxd;
+  if(!t.dataset.fx)return;
+  const arr=t.dataset.fx==='c'?x.causes:x.acts,v=t.value,i=arr.indexOf(v);
+  if(t.checked&&i<0)arr.push(v);else if(!t.checked&&i>=0)arr.splice(i,1);
+  t.closest('.fxo').classList.toggle('on',t.checked);
+  if(fxIsOther(v)){const o=$('fx-'+t.dataset.fx+'o');o.hidden=!t.checked;if(t.checked)o.focus();}
+});
+$('fixv').addEventListener('input',e=>{
+  const t=e.target,x=state.fxd;
+  if(t.id==='fx-co')x.causeOther=t.value;else if(t.id==='fx-ao')x.actOther=t.value;else if(t.id==='fx-note')x.note=t.value;else if(t.id==='fx-ro')x.resOther=t.value;
+});
+$('fixv').addEventListener('click',async e=>{
+  const rs=e.target.closest('[data-fxres]');
+  if(rs){state.fxd.res=rs.dataset.fxres;$('fx-res').innerHTML=fxResHTML();return;}
+  const a=e.target.closest('[data-fxact]');if(!a)return;
+  if(a.dataset.fxact==='close'){$('fixv').hidden=true;return;}
+  if(state.saving)return;
+  const x=state.fxd,res=x.res||fxAuto();
+  if(!x.causes.length)return toast('เลือกสาเหตุปัญหาอย่างน้อย 1 ข้อ');
+  if(x.causes.includes(FX_OTHER)&&!x.causeOther.trim())return toast('ระบุสาเหตุ (Others)');
+  if(!x.acts.length)return toast('เลือกการแก้ไขอย่างน้อย 1 ข้อ');
+  if(x.acts.includes(FX_OTHER)&&!x.actOther.trim())return toast('ระบุการแก้ไข (Others)');
+  if(res==='Others'&&!x.resOther.trim())return toast('ระบุผลการแก้ไข (Others)');
+  const c=state.fxCtx,d=state.last,i=state.info;
+  const payload={branch:state.branch,date:d.date,time:d.time,name:i.name.trim(),L:{pass:d.L.pass},H:{pass:d.H.pass},
+    fix:{round:c.round,failDate:c.failDate,failTime:c.failTime,failItems:c.failItems,causes:x.causes,causeOther:x.causeOther.trim(),acts:x.acts,actOther:x.actOther.trim(),note:x.note.trim(),result:res,resultOther:res==='Others'?x.resOther.trim():''}};
+  state.saving=true;const btn=$('fx-send');btn.disabled=true;
+  try{
+    if(API_URL){const j=await post({action:'save_fix',payload});if(!j.ok)throw new Error(j.error||'บันทึกไม่สำเร็จ');}
+    else await new Promise(r=>setTimeout(r,500));
+    $('fixv').hidden=true;
+    const all=d.L.pass&&d.H.pass;
+    doneBox(all,'<h2>บันทึกการแก้ไขแล้ว</h2><div class="dline '+(res==='Pass'?'ok':'bad')+'"><span>ผลการแก้ไข</span><span>'+esc(res==='Others'?'Others: '+x.resOther.trim():res)+'</span></div>'+
+      (API_URL?'':'<p class="demo">โหมดตัวอย่าง: ยังไม่ได้บันทึกลงชีตจริง</p>')+'<p class="fxline">บันทึกเรียบร้อย ถ้าจะบันทึกรายการใหม่ให้สแกนเข้าหน้านี้อีกครั้ง</p>');
+  }catch(err){toast('ส่งไม่สำเร็จ: '+(err&&err.message||'ลองใหม่อีกครั้ง'));btn.disabled=false;}
+  finally{state.saving=false;}
+});
+/* แถบบอกว่ากำลังกรอกซ้ำ */
+function fixBar(){
+  if(!state.rerun)return '';
+  const f=state.rerun.failItems;
+  const t=['L','H'].filter(l=>f[l].length).map(l=>'Control-'+l+': '+f[l].join(', ')).join(' · ');
+  return '<div class="fxb"><b>กรอก QC ซ้ำ Control-'+state.rerun.lv.join(' และ ')+'</b> เท่านั้น<br>รอบแรกไม่ผ่าน: '+esc(t)+'</div>';
 }
 
 
