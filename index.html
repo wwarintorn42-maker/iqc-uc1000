@@ -438,6 +438,14 @@ const CFG={
   names:['สมชาย','สุดา','วรินทร','มานี'],
   nameMode:true,          // true = เลือกชื่อจากรายชื่อ
   expDays:30,             // เตือนเมื่อ UC-Control เหลือไม่เกินกี่วัน
+  alerts:{failDays:2,itemFails:3,missDays:2},   // เกณฑ์เตือนบนแดชบอร์ด
+  fx:{groups:[   // สาเหตุ/การแก้ไข (Others ใส่ท้ายสุดให้อัตโนมัติ)
+    {g:'การป้อนข้อมูล / Error',items:['Input QC wrong level','Input QC wrong type','Input QC not enough on cup','Input calibrator wrong type','Error long time QC on cup','Error long time cal on cup']},
+    {g:'น้ำยา (Reagents)',items:['Reagents short volume','Reagents new bottle','Reagent fix long time','Reagents new lot','Reagents degenerated']},
+    {g:'Control',items:['Control low volume in the bottle','Control not enough on cup','Control degenerated ไม่ได้คุณภาพ','Control not set new lot','Control has a lot of Bubbles']},
+    {g:'Calibrate',items:['Calibrate degenerated ไม่ได้คุณภาพ','Calibrate fail','Calibrate not set new lot']},
+    {g:'เครื่อง / อื่นๆ',items:['Instruments','Water supply error','RT out of range','No explanation']}
+  ],acts:['Re Calibrate','Re Control','Contact a Technician']},
   report:{org:'โรงพยาบาลระยอง · ห้องปฏิบัติการ',signers:[{role:'ผู้จัดทำรายงาน',name:''},{role:'ผู้ตรวจสอบ',name:''},{role:'หัวหน้าห้องปฏิบัติการ',name:''}]}
 };
 /* ข้อมูลตัวอย่างในโหมดร่าง (ของจริงดึงจากชีตตามสาขา) */
@@ -901,14 +909,8 @@ function showDone(d,res){
 
 /* ---------- ฟอร์มบันทึกการแก้ไข (ร่วม L/H) ---------- */
 const FX_OTHER='Others (โปรดระบุ)';
-const FX_GROUPS=[
-  ['การป้อนข้อมูล / Error',['Input QC wrong level','Input QC wrong type','Input QC not enough on cup','Input calibrator wrong type','Error long time QC on cup','Error long time cal on cup']],
-  ['น้ำยา (Reagents)',['Reagents short volume','Reagents new bottle','Reagent fix long time','Reagents new lot','Reagents degenerated']],
-  ['Control',['Control low volume in the bottle','Control not enough on cup','Control degenerated ไม่ได้คุณภาพ','Control not set new lot','Control has a lot of Bubbles']],
-  ['Calibrate',['Calibrate degenerated ไม่ได้คุณภาพ','Calibrate fail','Calibrate not set new lot']],
-  ['เครื่อง / อื่นๆ',['Instruments','Water supply error','RT out of range','No explanation',FX_OTHER]]
-];
-const FX_ACTS=['Re Calibrate','Re Control','Contact a Technician',FX_OTHER];
+const fxGroups=()=>CFG.fx.groups.map((g,i,a)=>[g.g,i===a.length-1?g.items.concat([FX_OTHER]):g.items]);
+const fxActs=()=>CFG.fx.acts.concat([FX_OTHER]);
 const fxIsOther=l=>l===FX_OTHER;
 function fxRow(kind,label,on){
   return '<label class="fxo'+(on?' on':'')+'"><input type="checkbox" data-fx="'+kind+'" value="'+esc(label)+'"'+(on?' checked':'')+'><span>'+esc(label)+'</span></label>';
@@ -928,8 +930,8 @@ function showFix(){
   const x=state.fxd,c=state.fxCtx,d=state.last;
   const ft=['L','H'].filter(l=>c.failItems[l].length).map(l=>'Control-'+l+': '+c.failItems[l].join(', ')).join('  ·  ');
   const rt=['L','H'].filter(l=>!state.rerun||state.rerun.lv.includes(l)).map(l=>'Control-'+l+' '+(d[l].pass?'ผ่าน':'ไม่ผ่าน ('+d[l].fails.join(', ')+')')).join('  ·  ');
-  const causes=FX_GROUPS.map(g=>'<div class="fxg">'+g[0]+'</div>'+g[1].map(l=>fxRow('c',l,x.causes.includes(l))+(fxIsOther(l)?fxOtherInput('c',x):'')).join('')).join('');
-  const acts=FX_ACTS.map(l=>fxRow('a',l,x.acts.includes(l))+(fxIsOther(l)?fxOtherInput('a',x):'')).join('');
+  const causes=fxGroups().map(g=>'<div class="fxg">'+g[0]+'</div>'+g[1].map(l=>fxRow('c',l,x.causes.includes(l))+(fxIsOther(l)?fxOtherInput('c',x):'')).join('')).join('');
+  const acts=fxActs().map(l=>fxRow('a',l,x.acts.includes(l))+(fxIsOther(l)?fxOtherInput('a',x):'')).join('');
   $('fixv').innerHTML=
     '<div class="sh-top"><div class="wrap"><button type="button" class="iconbtn" data-fxact="close" aria-label="กลับ">'+ic('left')+'</button><h2>สาเหตุและการแก้ไข</h2></div></div>'+
     '<div class="wrap sh-body">'+
@@ -1007,7 +1009,7 @@ function openGate(){
     const code=$('g-code').value.trim(),m=$('g-msg'),b=$('g-ok');b.disabled=true;m.textContent='';
     try{
       if(!API_URL){if(code!==DEMO_CODE)throw new Error('รหัสผ่านไม่ถูกต้อง');ADMIN_CODE=code;WC={cfg:clone(CFG),crit:clone(P)};}
-      else{const j=await post({action:'admin_login',code});if(!j.ok)throw new Error(j.error||'รหัสผ่านไม่ถูกต้อง');ADMIN_CODE=code;WC={cfg:j.data.cfg,crit:j.data.criteria};}
+      else{const j=await post({action:'admin_login',code});if(!j.ok)throw new Error(j.error||'รหัสผ่านไม่ถูกต้อง');ADMIN_CODE=code;WC={cfg:j.data.cfg,crit:j.data.criteria};if(!WC.cfg.alerts)WC.cfg.alerts=clone(CFG.alerts);if(!WC.cfg.fx)WC.cfg.fx=clone(CFG.fx);}
       $('gate').hidden=true;openSec={crit:true};showSettings();
     }catch(err){m.textContent=err.message||'เข้าสู่ระบบไม่สำเร็จ';b.disabled=false;}
   };
@@ -1025,6 +1027,26 @@ function critEditor(p,i){
 function listRows(arr,attr){
   return arr.map((v,i)=>'<div class="lrow"><input class="sin" data-'+attr+'="'+i+'" value="'+esc(v)+'" placeholder="ชื่อ"><button type="button" class="iconbtn" data-sact="del-'+attr+':'+i+'" aria-label="ลบ">'+ic('trash')+'</button></div>').join('');
 }
+const AL_ROWS=[['failDays','ไม่ผ่านต่อเนื่อง','วัน'],['itemFails','รายการเดียวกันไม่ผ่านในเดือน','ครั้ง'],['missDays','ไม่ได้ทำ QC ติดต่อกัน','วันทำการ']];
+function alEditor(c){
+  return AL_ROWS.map(r=>'<div class="lab" style="margin-top:10px">เตือนเมื่อ'+r[1]+'ตั้งแต่<div class="stepper" style="margin-top:6px"><button type="button" class="iconbtn" data-sact="al-m:'+r[0]+'" aria-label="ลด">−</button><input class="sin" data-al="'+r[0]+'" type="number" inputmode="numeric" min="1" max="99" value="'+c.alerts[r[0]]+'"><span>'+r[2]+'</span><button type="button" class="iconbtn" data-sact="al-p:'+r[0]+'" aria-label="เพิ่ม">+</button></div></div>').join('');
+}
+function fxEditor(c){
+  const f=c.fx,last=f.groups.length-1;
+  const rows=(arr,attr,del)=>arr.map((v,i)=>'<div class="lrow"><input class="sin" data-'+attr+'="'+i+'" value="'+esc(v)+'" placeholder="ชื่อ"><button type="button" class="iconbtn" data-sact="'+del+i+'" aria-label="ลบ">'+ic('trash')+'</button></div>');
+  const g=f.groups.map((gr,gi)=>'<details class="crow" data-sec="fg'+gi+'"'+(openSec['fg'+gi]?' open':'')+'><summary><b>'+esc(gr.g||'(ไม่มีชื่อ)')+'</b><small>'+gr.items.length+' รายการ</small></summary><div class="secb">'+
+    '<label class="lab">ชื่อกลุ่ม<input class="sin" data-fg="'+gi+'" value="'+esc(gr.g)+'"></label>'+
+    gr.items.map((v,ii)=>'<div class="lrow"><input class="sin" data-fi="'+gi+':'+ii+'" value="'+esc(v)+'" placeholder="ชื่อสาเหตุ"><button type="button" class="iconbtn" data-sact="del-fi:'+gi+':'+ii+'" aria-label="ลบ">'+ic('trash')+'</button></div>').join('')+
+    (gi===last?'<div class="lrow"><input class="sin" value="'+esc(FX_OTHER)+'" disabled><span style="width:48px"></span></div>':'')+
+    '<button type="button" class="addbtn" data-sact="add-fi:'+gi+'">'+ic('plus')+'เพิ่มสาเหตุ</button>'+
+    '<button type="button" class="addbtn" style="color:var(--bad);border-color:var(--bad)" data-sact="del-fg:'+gi+'">'+ic('trash')+'ลบกลุ่มนี้</button></div></details>').join('');
+  return '<div class="lab">สาเหตุปัญหา (แยกเป็นกลุ่ม)</div>'+g+
+    '<button type="button" class="addbtn" data-sact="add-fg">'+ic('plus')+'เพิ่มกลุ่ม</button>'+
+    '<div class="lab" style="margin-top:16px">การแก้ไข</div>'+rows(f.acts,'fa','del-fa:').join('')+
+    '<div class="lrow"><input class="sin" value="'+esc(FX_OTHER)+'" disabled><span style="width:48px"></span></div>'+
+    '<button type="button" class="addbtn" data-sact="add-fa">'+ic('plus')+'เพิ่มการแก้ไข</button>'+
+    '<div class="infonote" style="margin-top:10px">'+ic('info')+'<span>"Others (โปรดระบุ)" อยู่ท้ายสุดเสมอ · ถ้าเปลี่ยนชื่อ ข้อมูลเก่าในชีตจะยังใช้ชื่อเดิม และสถิติแดชบอร์ดจะแยกเป็นอีกรายการ</span></div>';
+}
 function showSettings(){
   const c=WC.cfg;
   const sec=(id,title,sub,body)=>'<details class="sec" data-sec="'+id+'"'+(openSec[id]?' open':'')+'><summary><span><b>'+title+'</b><small>'+sub+'</small></span></summary><div class="secb">'+body+'</div></details>';
@@ -1037,6 +1059,8 @@ function showSettings(){
     sec('br','สาขา','เพิ่ม ลบ หรือเปลี่ยนชื่อสาขา',listRows(c.branches,'b').replace(/placeholder="ชื่อ"/g,'placeholder="ชื่อสาขา"')+'<button type="button" class="addbtn" data-sact="add-b">'+ic('plus')+'เพิ่มสาขา</button><div class="infonote">'+ic('info')+'<span>เปลี่ยนชื่อสาขาไม่ย้อนแก้ข้อมูลเก่าในชีต ข้อมูลเดิมยังใช้ชื่อเดิม</span></div>')+
     sec('nm','ผู้บันทึก','รายชื่อให้เลือกที่หน้ากรอก (กันสะกดชื่อไม่ตรงกัน)','<label class="tgl"><span>ให้เลือกชื่อจากรายชื่อ</span><input type="checkbox" id="cfg-mode"'+(c.nameMode?' checked':'')+'></label>'+listRows(c.names,'n')+'<button type="button" class="addbtn" data-sact="add-n">'+ic('plus')+'เพิ่มชื่อ</button>')+
     sec('ex','เตือน UC-Control ใกล้หมดอายุ','เตือนเมื่อ Exp เหลือไม่เกินกี่วัน','<div class="stepper"><button type="button" class="iconbtn" data-sact="days-m" aria-label="ลด">−</button><input class="sin" id="cfg-days" type="number" inputmode="numeric" min="1" max="365" value="'+c.expDays+'"><span>วัน</span><button type="button" class="iconbtn" data-sact="days-p" aria-label="เพิ่ม">+</button></div>')+
+    sec('al','การเตือนบนแดชบอร์ด','ตั้งว่าเกิดอะไรแล้วให้ขึ้นการแจ้งเตือน',alEditor(c)+'<div class="infonote" style="margin-top:10px">'+ic('info')+'<span>กรอกซ้ำแล้วยังไม่ผ่าน จะเตือนเสมอ</span></div>')+
+    sec('fx','สาเหตุและการแก้ไข','รายการที่ให้เลือกในหน้าฟอร์มแก้ไข',fxEditor(c))+
     sec('rp','ข้อความในรายงาน','หัวรายงานและช่องลงนาม','<label class="lab">ชื่อหน่วยงาน<input class="sin" id="cfg-org" value="'+esc(c.report.org)+'"></label>'+sg)+
     sec('pw','เปลี่ยนรหัสผ่าน','ใช้ร่วมกับแดชบอร์ดและการตั้งค่า','<label class="lab">รหัสเดิม<input class="sin" id="pw-old" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">รหัสใหม่<input class="sin" id="pw-new" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">ยืนยันรหัสใหม่<input class="sin" id="pw-new2" type="password" autocomplete="off"></label><button type="button" class="addbtn" data-sact="pass" style="border-style:solid">เปลี่ยนรหัสผ่าน</button>')+
     '<div class="infonote">'+ic('info')+'<span>Lot/Exp ของ UC-Control และ Strip เปลี่ยนได้ที่หน้าแรกโดยไม่ต้องใส่รหัส</span></div></div>'+
@@ -1049,13 +1073,20 @@ $('settings').addEventListener('click',e=>{
   const cc=e.target.closest('[data-cc]');
   if(cc){const[i,l,o]=cc.dataset.cc.split(':'),p=WC.crit[+i],ix=p[l].indexOf(o);if(ix>=0)p[l].splice(ix,1);else p[l].push(o);p[l]=p.opts.filter(x=>p[l].includes(x));rerenderSettings();return;}
   const a=e.target.closest('[data-sact]');if(!a)return;
-  const[k,v]=a.dataset.sact.split(':'),c=WC.cfg;
+  const[k,v,v2]=a.dataset.sact.split(':'),c=WC.cfg;
   if(k==='close'){$('settings').hidden=true;}
   else if(k==='add-b'){c.branches.push('');rerenderSettings();}
   else if(k==='del-b'){if(c.branches.length<=1)return toast('ต้องมีอย่างน้อย 1 สาขา');c.branches.splice(+v,1);rerenderSettings();}
   else if(k==='add-n'){c.names.push('');rerenderSettings();}
   else if(k==='del-n'){c.names.splice(+v,1);rerenderSettings();}
   else if(k==='days-m'||k==='days-p'){const x=parseInt($('cfg-days').value,10)||c.expDays;c.expDays=Math.max(1,Math.min(365,x+(k==='days-p'?5:-5)));$('cfg-days').value=c.expDays;}
+  else if(k==='al-m'||k==='al-p'){c.alerts[v]=Math.max(1,Math.min(99,(parseInt(c.alerts[v],10)||1)+(k==='al-p'?1:-1)));rerenderSettings();}
+  else if(k==='add-fg'){c.fx.groups.push({g:'กลุ่มใหม่',items:['']});openSec['fg'+(c.fx.groups.length-1)]=true;rerenderSettings();}
+  else if(k==='del-fg'){if(c.fx.groups.length<=1)return toast('ต้องมีอย่างน้อย 1 กลุ่ม');c.fx.groups.splice(+v,1);rerenderSettings();}
+  else if(k==='add-fi'){c.fx.groups[+v].items.push('');rerenderSettings();}
+  else if(k==='del-fi'){c.fx.groups[+v].items.splice(+v2,1);rerenderSettings();}
+  else if(k==='add-fa'){c.fx.acts.push('');rerenderSettings();}
+  else if(k==='del-fa'){c.fx.acts.splice(+v,1);rerenderSettings();}
   else if(k==='save')saveSettings();
   else if(k==='pass')changePass();
 });
@@ -1065,6 +1096,10 @@ $('settings').addEventListener('input',e=>{
   else if(t.dataset.n!==undefined)c.names[+t.dataset.n]=t.value;
   else if(t.dataset.sg!==undefined){const[i,f]=t.dataset.sg.split(':');c.report.signers[+i][f]=t.value;}
   else if(t.dataset.cn!==undefined){const[i,l,x]=t.dataset.cn.split(':');WC.crit[+i][l][+x]=t.value;}
+  else if(t.dataset.al!==undefined)c.alerts[t.dataset.al]=t.value;
+  else if(t.dataset.fg!==undefined)c.fx.groups[+t.dataset.fg].g=t.value;
+  else if(t.dataset.fi!==undefined){const[gi,ii]=t.dataset.fi.split(':');c.fx.groups[+gi].items[+ii]=t.value;}
+  else if(t.dataset.fa!==undefined)c.fx.acts[+t.dataset.fa]=t.value;
   else if(t.id==='cfg-org')c.report.org=t.value;
   else if(t.id==='cfg-days')c.expDays=t.value;
   else if(t.id==='cfg-mode')c.nameMode=t.checked;
@@ -1077,6 +1112,12 @@ async function saveSettings(){
   c.names=c.names.map(s=>s.trim()).filter(Boolean);
   if(new Set(c.names).size!==c.names.length)return toast('ชื่อผู้บันทึกซ้ำกัน');
   c.expDays=Math.max(1,Math.min(365,parseInt(c.expDays,10)||30));
+  [['failDays',2],['itemFails',3],['missDays',2]].forEach(([k,d])=>{c.alerts[k]=Math.max(1,Math.min(99,parseInt(c.alerts[k],10)||d));});
+  const uniq=a=>[...new Set(a.map(x=>String(x).trim()).filter(x=>x&&x!==FX_OTHER))];
+  c.fx.groups=c.fx.groups.map(g=>({g:String(g.g).trim(),items:uniq(g.items)})).filter(g=>g.g);
+  if(!c.fx.groups.length)return toast('ต้องมีอย่างน้อย 1 กลุ่มสาเหตุ');
+  c.fx.acts=uniq(c.fx.acts);
+  if(!c.fx.acts.length)return toast('ต้องมีการแก้ไขอย่างน้อย 1 รายการ');
   for(const p of WC.crit)for(const l of ['L','H']){
     if(p.num){const a=parseFloat(p[l][0]),b=parseFloat(p[l][1]);if(isNaN(a)||isNaN(b)||a>b)return toast(p.ab+' Control-'+l+': ช่วงไม่ถูกต้อง');p[l]=[a,b];}
     else if(!p[l].length)return toast(p.ab+' Control-'+l+': เลือกผลที่ผ่านอย่างน้อย 1 ค่า');
@@ -1106,7 +1147,7 @@ async function changePass(){
 /* ---------- โหลดค่าตั้งค่าสาธารณะ (โหมดจริง) ---------- */
 async function loadConfig(){
   if(!API_URL)return;
-  try{const j=await apiGet('config');if(j&&j.ok&&j.data){['branches','names','nameMode','expDays'].forEach(k=>{if(j.data[k]!==undefined)CFG[k]=j.data[k];});if(!CFG.branches.includes(state.branch))state.branch='';}}catch(err){}
+  try{const j=await apiGet('config');if(j&&j.ok&&j.data){['branches','names','nameMode','expDays','fx'].forEach(k=>{if(j.data[k]!==undefined)CFG[k]=j.data[k];});if(!CFG.branches.includes(state.branch))state.branch='';}}catch(err){}
 }
 
 /* ---------- โหลดเกณฑ์ผ่านจากแท็บ "เกณฑ์ผ่าน" ในชีต (โหมดจริง) ---------- */
