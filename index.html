@@ -305,19 +305,21 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 
 <script>
 /* ---------- เกณฑ์ผ่าน (เรียงตามไฟล์ QC_Urine.xlsx) ---------- */
-const S=['-','1+','2+','3+','4+'];
+const S=['Negative','Trace','1+','2+','3+','4+'];
+const PHO=['5.0','5.5','6.0','6.5','7.0','7.5','8.0'];
+const SGO=['<1.005','1.010','1.015','1.020','1.025','1.030'];
 const LV=['L','H'];
 let P=[
- {k:'URO',ab:'URO',name:'Urobilinogen',opts:['normal','1+','2+','3+','4+'],L:['normal'],H:['1+','2+','3+','4+']},
- {k:'BLD',ab:'BLD',name:'Blood',opts:S,L:['-'],H:['1+','2+','3+']},
- {k:'BIL',ab:'BIL',name:'Bilirubin',opts:S,L:['-','1+'],H:['1+','2+','3+']},
- {k:'KET',ab:'KET',name:'Ketones',opts:S,L:['-'],H:['1+','2+','3+']},
- {k:'GLU',ab:'GLU',name:'Glucose',opts:S,L:['-'],H:['1+','2+','3+']},
- {k:'PRO',ab:'PRO',name:'Protein',opts:S,L:['-'],H:['1+','2+','3+','4+']},
- {k:'pH',ab:'pH',name:'pH',num:true,dec:1,ph:'เช่น 5.5',L:[5.0,6.0],H:[7.0,9.0]},
- {k:'NIT',ab:'NIT',name:'Nitrite',opts:['-','+'],L:['-'],H:['+']},
- {k:'LEU',ab:'LEU',name:'Leukocytes',opts:S,L:['-'],H:['2+','3+']},
- {k:'SG',ab:'S.G',name:'Specific gravity',num:true,dec:3,ph:'เช่น 1.015',L:[1.000,1.025],H:[1.010,1.030]}
+ {k:'URO',ab:'URO',name:'Urobilinogen',opts:['Normal','1+','2+','3+','4+'],L:['Normal'],H:['1+','2+','3+','4+']},
+ {k:'BLD',ab:'BLD',name:'Blood',opts:S,L:['Negative'],H:['1+','2+','3+']},
+ {k:'BIL',ab:'BIL',name:'Bilirubin',opts:S,L:['Negative','1+'],H:['1+','2+','3+']},
+ {k:'KET',ab:'KET',name:'Ketones',opts:S,L:['Negative'],H:['1+','2+','3+']},
+ {k:'GLU',ab:'GLU',name:'Glucose',opts:S,L:['Negative'],H:['1+','2+','3+']},
+ {k:'PRO',ab:'PRO',name:'Protein',opts:S,L:['Negative'],H:['1+','2+','3+','4+']},
+ {k:'pH',ab:'pH',name:'pH',opts:PHO,L:['5.0','5.5','6.0'],H:['7.0','7.5','8.0']},
+ {k:'NIT',ab:'NIT',name:'Nitrite',opts:['Negative','Positive'],L:['Negative'],H:['Positive']},
+ {k:'LEU',ab:'LEU',name:'Leukocytes',opts:S,L:['Negative'],H:['2+','3+']},
+ {k:'SG',ab:'S.G',name:'Specific gravity',opts:SGO,L:['<1.005','1.010','1.015','1.020','1.025'],H:['1.010','1.015','1.020','1.025','1.030']}
 ];
 let N=P.length, TOTAL=N*2;
 let critWarn=[];
@@ -520,6 +522,12 @@ function patchMark(i,l){
   const[a,b]=p[l],sp=b-a,mn=a-sp*.7,mx=b+sp*.7;
   m.hidden=false;m.style.left=Math.max(2,Math.min(98,(n-mn)/(mx-mn)*100))+'%';
 }
+function chipCols(o){
+  const n=o.length,long=Math.max(...o.map(x=>x.length))>=5;
+  if(n>=5&&long)return 'repeat(3,1fr)';
+  if(n>=7)return 'repeat(4,1fr)';
+  return o.map(x=>x.length>2?'1.9fr':'1fr').join(' ');
+}
 function itemHTML(p,l,i){
   const j=judge(p,l),v=state.vals[l][p.k];
   const cls=j===true?' ok':j===false?' bad':(state.showMiss&&j===null?' miss':'');
@@ -527,7 +535,7 @@ function itemHTML(p,l,i){
   if(p.num){
     inp='<input class="field" id="n-'+i+'" type="number" inputmode="decimal" step="any" placeholder="'+p.ph+'" value="'+(v===undefined?'':esc(v))+'" aria-label="'+p.ab+' Control-'+l+'">'+rbHTML(p,l,i);
   }else{
-    inp='<div class="chips" style="grid-template-columns:'+p.opts.map(o=>o.length>2?'1.9fr':'1fr').join(' ')+'">'+
+    inp='<div class="chips" style="grid-template-columns:'+chipCols(p.opts)+'">'+
       p.opts.map(o=>'<button type="button" class="chip'+(v===o?' on':'')+'" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('')+'</div>';
   }
   return '<div class="card item '+l+cls+'" id="c-'+i+'" data-i="'+i+'"><div class="ch"><span class="num">'+(i+1)+'</span><div class="ih"><b>'+p.ab+'</b><span>'+p.name+'</span></div>'+
