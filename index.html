@@ -301,7 +301,7 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 @media (min-width:600px){.chip{min-height:62px}}
 @media (max-width:350px){.tr,.th{grid-template-columns:minmax(0,1fr) 74px 74px}.res{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
 
-/* ===== v4: ดีไซน์ให้เข้าชุดกับแดชบอร์ด ===== */
+/* ===== v4: ดีไซน์ให้เข้าชุดกับDashboard ===== */
 .hero{background:linear-gradient(140deg,#1B9499 0%,#148087 45%,#126B73 100%);color:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:linear-gradient(140deg,#0F5A62,#0A3B41)}}
 :root[data-theme="dark"] .hero{background:linear-gradient(140deg,#0F5A62,#0A3B41)}
@@ -379,7 +379,7 @@ label.fl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
 .dbox .btn.alt{background:var(--soft);box-shadow:none;margin-top:10px}
 .dbox .fxline{margin-top:8px;font-size:13.5px;color:var(--mute)}
 
-/* ===== เข้าชุดกับแดชบอร์ด v6: การ์ดเส้นขอบบาง + ไอคอนวงกลมพาสเทล + กรอบลอยบนจอใหญ่ ===== */
+/* ===== เข้าชุดกับDashboard v6: การ์ดเส้นขอบบาง + ไอคอนวงกลมพาสเทล + กรอบลอยบนจอใหญ่ ===== */
 .panel,.card,.sec{border-radius:18px;box-shadow:none;border:1px solid var(--line)}
 .card.ok{border-color:var(--okline)}.card.bad{border-color:var(--badline)}
 label.fl .ic,.plabel .ic{width:26px;height:26px;padding:5px;border-radius:50%;background:var(--Lt);color:var(--pri);flex:none;stroke-width:2.2}
@@ -480,7 +480,7 @@ const CFG={
   names:['สมชาย','สุดา','วรินทร','มานี'],
   nameMode:true,          // true = เลือกชื่อจากรายชื่อ
   expDays:30,             // เตือนเมื่อ UC-Control เหลือไม่เกินกี่วัน
-  alerts:{failDays:2,itemFails:3,missDays:2},   // เกณฑ์เตือนบนแดชบอร์ด
+  alerts:{failDays:2,itemFails:3,missDays:2},   // เกณฑ์เตือนบนDashboard
   fx:{groups:[   // สาเหตุ/การแก้ไข (Others ใส่ท้ายสุดให้อัตโนมัติ)
     {g:'การป้อนข้อมูล / Error',items:['Input QC wrong level','Input QC wrong type','Input QC not enough on cup','Input calibrator wrong type','Error long time QC on cup','Error long time cal on cup']},
     {g:'น้ำยา (Reagents)',items:['Reagents short volume','Reagents new bottle','Reagent fix long time','Reagents new lot','Reagents degenerated']},
@@ -1128,7 +1128,7 @@ function fxEditor(c){
     '<div class="lab" style="margin-top:16px">การแก้ไข</div>'+rows(f.acts,'fa','del-fa:').join('')+
     '<div class="lrow"><input class="sin" value="'+esc(FX_OTHER)+'" disabled><span style="width:48px"></span></div>'+
     '<button type="button" class="addbtn" data-sact="add-fa">'+ic('plus')+'เพิ่มการแก้ไข</button>'+
-    '<div class="infonote" style="margin-top:10px">'+ic('info')+'<span>"Others (โปรดระบุ)" อยู่ท้ายสุดเสมอ · ถ้าเปลี่ยนชื่อ ข้อมูลเก่าในชีตจะยังใช้ชื่อเดิม และสถิติแดชบอร์ดจะแยกเป็นอีกรายการ</span></div>';
+    '<div class="infonote" style="margin-top:10px">'+ic('info')+'<span>"Others (โปรดระบุ)" อยู่ท้ายสุดเสมอ · ถ้าเปลี่ยนชื่อ ข้อมูลเก่าในชีตจะยังใช้ชื่อเดิม และสถิติDashboardจะแยกเป็นอีกรายการ</span></div>';
 }
 function showSettings(){
   const c=WC.cfg;
@@ -1142,10 +1142,10 @@ function showSettings(){
     sec('br','สาขา','เพิ่ม ลบ หรือเปลี่ยนชื่อสาขา',listRows(c.branches,'b').replace(/placeholder="ชื่อ"/g,'placeholder="ชื่อสาขา"')+'<button type="button" class="addbtn" data-sact="add-b">'+ic('plus')+'เพิ่มสาขา</button><div class="infonote">'+ic('info')+'<span>เปลี่ยนชื่อสาขาไม่ย้อนแก้ข้อมูลเก่าในชีต ข้อมูลเดิมยังใช้ชื่อเดิม</span></div>')+
     sec('nm','ผู้บันทึก','รายชื่อให้เลือกที่หน้ากรอก (กันสะกดชื่อไม่ตรงกัน)','<label class="tgl"><span>ให้เลือกชื่อจากรายชื่อ</span><input type="checkbox" id="cfg-mode"'+(c.nameMode?' checked':'')+'></label>'+listRows(c.names,'n')+'<button type="button" class="addbtn" data-sact="add-n">'+ic('plus')+'เพิ่มชื่อ</button>')+
     sec('ex','เตือน UC-Control ใกล้หมดอายุ','เตือนเมื่อ Exp เหลือไม่เกินกี่วัน','<div class="stepper"><button type="button" class="iconbtn" data-sact="days-m" aria-label="ลด">−</button><input class="sin" id="cfg-days" type="number" inputmode="numeric" min="1" max="365" value="'+c.expDays+'"><span>วัน</span><button type="button" class="iconbtn" data-sact="days-p" aria-label="เพิ่ม">+</button></div>')+
-    sec('al','การเตือนบนแดชบอร์ด','ตั้งว่าเกิดอะไรแล้วให้ขึ้นการแจ้งเตือน',alEditor(c)+'<div class="infonote" style="margin-top:10px">'+ic('info')+'<span>กรอกซ้ำแล้วยังไม่ผ่าน จะเตือนเสมอ</span></div>')+
+    sec('al','การเตือนบนDashboard','ตั้งว่าเกิดอะไรแล้วให้ขึ้นการแจ้งเตือน',alEditor(c)+'<div class="infonote" style="margin-top:10px">'+ic('info')+'<span>กรอกซ้ำแล้วยังไม่ผ่าน จะเตือนเสมอ</span></div>')+
     sec('fx','สาเหตุและการแก้ไข','รายการที่ให้เลือกในหน้าฟอร์มแก้ไข',fxEditor(c))+
     sec('rp','ข้อความในรายงาน','หัวรายงานและช่องลงนาม','<label class="lab">ชื่อหน่วยงาน<input class="sin" id="cfg-org" value="'+esc(c.report.org)+'"></label>'+sg)+
-    sec('pw','เปลี่ยนรหัสผ่าน','ใช้ร่วมกับแดชบอร์ดและการตั้งค่า','<label class="lab">รหัสเดิม<input class="sin" id="pw-old" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">รหัสใหม่<input class="sin" id="pw-new" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">ยืนยันรหัสใหม่<input class="sin" id="pw-new2" type="password" autocomplete="off"></label><button type="button" class="addbtn" data-sact="pass" style="border-style:solid">เปลี่ยนรหัสผ่าน</button>')+
+    sec('pw','เปลี่ยนรหัสผ่าน','ใช้ร่วมกับDashboardและการตั้งค่า','<label class="lab">รหัสเดิม<input class="sin" id="pw-old" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">รหัสใหม่<input class="sin" id="pw-new" type="password" autocomplete="off"></label><label class="lab" style="margin-top:8px">ยืนยันรหัสใหม่<input class="sin" id="pw-new2" type="password" autocomplete="off"></label><button type="button" class="addbtn" data-sact="pass" style="border-style:solid">เปลี่ยนรหัสผ่าน</button>')+
     '<div class="infonote">'+ic('info')+'<span>Lot/Exp ของ UC-Control และ Strip เปลี่ยนได้ที่หน้าแรกโดยไม่ต้องใส่รหัส</span></div></div>'+
     '<div class="sh-dock"><div class="in"><button type="button" class="btn pri" data-sact="save">'+ic('save')+'<span>บันทึกการตั้งค่า</span></button></div></div>';
   $('settings').hidden=false;
@@ -1223,7 +1223,7 @@ async function changePass(){
     if(API_URL){const j=await post({action:'admin_pass',code:ADMIN_CODE,newCode:n});if(!j.ok)throw new Error(j.error||'เปลี่ยนรหัสไม่สำเร็จ');}
     else DEMO_CODE=n;
     ADMIN_CODE=n;['pw-old','pw-new','pw-new2'].forEach(id=>$(id).value='');
-    toast('เปลี่ยนรหัสผ่านแล้ว (ใช้กับแดชบอร์ดด้วย)');
+    toast('เปลี่ยนรหัสผ่านแล้ว (ใช้กับDashboardด้วย)');
   }catch(err){toast(err&&err.message||'เปลี่ยนรหัสไม่สำเร็จ');}
 }
 
