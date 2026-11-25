@@ -108,14 +108,24 @@ main{padding-block:18px 190px}
 .gear:focus-visible{outline:2px solid #fff;outline-offset:2px}
 select.bare{appearance:none;-webkit-appearance:none;background:none;cursor:pointer;padding-right:24px;background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 12px) 55%,calc(100% - 7px) 55%;background-size:5px 5px;background-repeat:no-repeat}
 .gate{position:fixed;inset:0;z-index:60;background:rgba(10,30,38,.62);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:20px}
-.gbox{background:var(--card);border-radius:26px;padding:26px 22px 20px;max-width:360px;width:100%;text-align:center;animation:pop .3s cubic-bezier(.2,1.2,.4,1)}
-.gbox h2{margin:8px 0 0;font-size:22px}
-.gi{width:56px;height:56px;border-radius:18px;margin:0 auto;display:grid;place-items:center;background:var(--Lt);color:var(--pri)}
-.gi .ic{width:28px;height:28px}
-.gin{width:100%;height:54px;margin-top:14px;border:1.5px solid var(--line);border-radius:14px;background:var(--soft);padding:0 14px;font-size:20px;text-align:center;letter-spacing:.2em}
-.gin:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
-.gmsg{color:var(--bad);font-size:13px;min-height:1.3em;margin-top:6px}
+.gbox{position:relative;overflow:hidden;background:var(--card);border-radius:30px;padding:0;max-width:360px;width:100%;text-align:center;animation:pop .3s cubic-bezier(.2,1.2,.4,1);box-shadow:0 30px 60px -28px rgba(0,0,0,.55)}
+.gh{position:relative;overflow:hidden;height:150px;padding:30px 20px 0;color:#fff;background:linear-gradient(135deg,#126B73,#178C91)}
+.gh i{position:absolute;border-radius:50%}
+.gh .c1{width:120px;height:120px;left:-38px;bottom:-34px;background:#F2B26B;opacity:.9}
+.gh .c2{width:104px;height:104px;right:-32px;bottom:-28px;background:#3FB08A;opacity:.9}
+.gbox h2{position:relative;margin:0;font-size:24px;color:#fff}
+.gi{position:relative;width:48px;height:48px;border-radius:15px;margin:0 auto 10px;display:grid;place-items:center;background:rgba(255,255,255,.2);color:#fff}
+.gi svg{width:26px;height:26px}
+.gb{position:relative;margin-top:-30px;background:var(--card);border-radius:30px 30px 0 0;padding:24px 22px 20px}
+.gb .sub{margin:0}
+.gpw{display:flex;align-items:stretch;margin-top:16px;background:var(--soft);border:1.5px solid transparent;border-radius:999px;overflow:hidden}
+.gpw:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 18%,transparent)}
+.gin{flex:1;min-width:0;height:54px;border:0;background:transparent;padding:0 8px 0 22px;font-size:20px;text-align:left;letter-spacing:.12em;outline:none;color:var(--fg)}
+.geye{flex:none;width:54px;border:0;background:transparent;color:var(--mute);display:grid;place-items:center;cursor:pointer}
+.geye svg{width:22px;height:22px}
+.gmsg{color:var(--bad);font-size:13px;min-height:1.3em;margin-top:8px}
 .gbtns{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:6px}
+.gbtns .btn{border-radius:999px}
 .gbox .demo{margin:12px 0 0;font-size:12.5px;color:var(--warn);background:var(--warnbg);border-radius:10px;padding:8px 10px}
 .sheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sh-top{position:sticky;top:0;z-index:2;background:var(--card);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
@@ -1071,11 +1081,12 @@ const post=body=>fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plai
 document.addEventListener('click',e=>{if(e.target.closest('#open-settings'))openGate();});
 
 function openGate(){
-  $('gate').innerHTML='<div class="gbox" role="dialog" aria-modal="true"><div class="gi">'+ic('lock')+'</div><h2>ตั้งค่าระบบ</h2><p class="sub">ใส่รหัสผ่านเพื่อเข้าสู่การตั้งค่า</p>'+
-    '<input class="gin" id="g-code" type="password" placeholder="รหัสผ่าน" autocomplete="off"><div class="gmsg" id="g-msg" role="alert"></div>'+
+  $('gate').innerHTML='<div class="gbox" role="dialog" aria-modal="true"><div class="gh"><i class="c1"></i><i class="c2"></i><div class="gi">'+ic('lock')+'</div><h2>ตั้งค่าระบบ</h2></div><div class="gb"><p class="sub">ใส่รหัสผ่านเพื่อเข้าสู่การตั้งค่า</p>'+
+    '<div class="gpw"><input class="gin" id="g-code" type="password" placeholder="รหัสผ่าน" autocomplete="off"><button type="button" class="geye" id="g-eye" aria-label="แสดงรหัสผ่าน"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="gmsg" id="g-msg" role="alert"></div>'+
     '<div class="gbtns"><button type="button" class="btn" id="g-cancel">ยกเลิก</button><button type="button" class="btn pri" id="g-ok">เข้าสู่ระบบ</button></div>'+
-    (API_URL?'':'<p class="demo">โหมดตัวอย่าง: รหัสคือ 1234</p>')+'</div>';
+    (API_URL?'':'<p class="demo">โหมดตัวอย่าง: รหัสคือ 1234</p>')+'</div></div>';
   $('gate').hidden=false;setTimeout(()=>$('g-code').focus(),50);
+  $('g-eye').onclick=()=>{const c=$('g-code');c.type=c.type==='password'?'text':'password';c.focus();};
   $('g-cancel').onclick=()=>{$('gate').hidden=true;};
   const go=async()=>{
     const code=$('g-code').value.trim(),m=$('g-msg'),b=$('g-ok');b.disabled=true;m.textContent='';
