@@ -421,6 +421,20 @@ label.fl .ic,.plabel .ic{width:26px;height:26px;padding:5px;border-radius:50%;ba
 .btn.pri .rip,.chip.on .rip,.br.on .rip{background:#fff;opacity:.4}
 @keyframes rip{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
 @media (prefers-reduced-motion:reduce){.rip{display:none}}
+
+/* ---- Liquid Glass (ประมาณ): แถบล่าง + แถบสรุป — ใช้เฉพาะเบราว์เซอร์ที่รองรับ backdrop-filter ---- */
+:root{--gl:rgba(255,255,255,.58);--glb:rgba(255,255,255,.75);--gls:inset 0 1px 0 rgba(255,255,255,.8);--glfade:rgba(234,244,244,.8)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--gl:rgba(19,42,46,.58);--glb:rgba(255,255,255,.14);--gls:inset 0 1px 0 rgba(255,255,255,.10);--glfade:rgba(12,29,32,.8)}}
+:root[data-theme="dark"]{--gl:rgba(19,42,46,.58);--glb:rgba(255,255,255,.14);--gls:inset 0 1px 0 rgba(255,255,255,.10);--glfade:rgba(12,29,32,.8)}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .dock{background:none}
+  .dock::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(to top,var(--glfade) 55%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);-webkit-mask-image:linear-gradient(to top,#000 62%,transparent);mask-image:linear-gradient(to top,#000 62%,transparent)}
+  .dsum,.dock .btn:not(.pri){background:var(--gl);border:1px solid var(--glb);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:var(--gls),0 10px 24px -14px rgba(13,79,86,.4)}
+}
+@media (prefers-reduced-transparency:reduce){
+  .dock::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(to top,var(--bg) 62%,transparent)}
+  .dsum,.dock .btn:not(.pri){-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--card);border-color:var(--line)}
+}
 </style>
 
 <header id="top"></header>
